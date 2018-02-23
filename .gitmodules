@@ -1,0 +1,3 @@
+[submodule "src/api-common"]
+	path = src/api-common
+	url = https://github.com/sgnz-chat/api-common

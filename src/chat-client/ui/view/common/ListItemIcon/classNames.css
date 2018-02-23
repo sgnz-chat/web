@@ -1,0 +1,20 @@
+.Host {
+    display    : inline-flex;
+    align-items: center;
+    width      : 1rem;
+    min-width  : 1rem;
+    height     : 1rem;
+    min-height : 1rem;
+}
+
+.Host.Selected {
+    color: #2196F3;
+}
+
+.Host:nth-child(1) {
+    margin-right: 1.5rem;
+}
+
+.Host:not(:nth-child(1)) {
+    margin-left: 1rem;
+}

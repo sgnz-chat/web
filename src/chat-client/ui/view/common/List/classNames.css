@@ -1,0 +1,16 @@
+.Host {
+    box-sizing: border-box;
+    margin    : 0;
+}
+
+.Host + .Host {
+    border-top: 1px solid rgba(0, 0, 0, .12);
+}
+
+.Host.Horizontal {
+    padding: 0;
+}
+
+.Host.Vertical {
+    padding: .5rem 0;
+}

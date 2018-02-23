@@ -1,0 +1,11 @@
+.Host {
+    display: flex;
+}
+
+.Host.Horizontal {
+    flex-direction: row;
+}
+
+.Host.Vertical {
+    flex-direction: column;
+}

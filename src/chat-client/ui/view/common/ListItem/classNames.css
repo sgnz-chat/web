@@ -1,0 +1,25 @@
+.Host {
+    display        : flex;
+    flex-grow      : 1;
+    align-items    : center;
+    box-sizing     : border-box;
+    min-height     : 3rem;
+    padding        : 0 1rem;
+    outline-width  : 0;
+    color          : inherit;
+    text-decoration: none;
+    transition     : all .3s ease-out;
+}
+
+.Host:not(.Disabled) {
+    cursor: pointer;
+}
+
+.Host:not(.Disabled):hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.Host.Selected:nth-child(1) {
+    color : #2196F3;
+    cursor: default;
+}

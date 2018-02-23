@@ -1,0 +1,39 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npm run postinstall:production",
+    "postinstall:development": "webpack -d",
+    "postinstall:production": "webpack -p",
+    "start": "browser-sync start --config bs-config.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^7.1.6",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.22.0",
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.22.0",
+    "browser-sync": "^2.18.13",
+    "connect-history-api-fallback": "^1.4.0",
+    "css-loader": "^0.28.7",
+    "postcss-loader": "^2.0.8",
+    "query-string": "^5.0.1",
+    "react": "^16.0.0",
+    "react-color": "^2.13.8",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "style-loader": "^0.19.0",
+    "webpack": "^3.8.1",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "dependencies": {
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "cors": "^2.8.4",
+    "uglify-es-webpack-plugin": "^0.10.0",
+    "uglifyjs-webpack-plugin": "^1.0.1"
+  }
+}

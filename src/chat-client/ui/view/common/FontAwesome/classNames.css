@@ -1,0 +1,6 @@
+.Host {
+    display     : inline-block;
+    font-family : "FontAwesome";
+    text-align  : center;
+    user-select : none;
+}
