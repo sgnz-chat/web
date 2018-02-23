@@ -1,0 +1,84 @@
+.Host {
+    display       : flex;
+    flex-direction: column;
+    margin        : 16px 0 8px 0;
+}
+
+.InputText {
+    width           : 100%;
+    padding         : 0;
+    padding-bottom  : 8px;
+    border-width    : 0;
+    border-bottom   : 1px solid #DDD;
+    outline-width   : 0;
+    box-shadow      : none;
+    background-color: transparent;
+    color           : inherit;
+    font-size       : inherit;
+    transition      : all .3s ease-out;
+}
+
+.Label {
+    display       : inline-block;
+    position      : relative;
+    pointer-events: none;
+}
+
+.LabelText:not(:empty) {
+    display      : inline-block;
+    position     : absolute;
+    margin-bottom: 8px;
+    font-size    : inherit;
+    color        : rgba(0, 0, 0, .38);
+    transform    : translateY(calc(100%));
+    transition   : all .3s ease-out;
+}
+
+.DummyLabelText:not(:empty) {
+    display      : inline-block;
+    visibility   : hidden;
+    margin-bottom: 8px;
+    font-size    : .75rem;
+}
+
+.HelperText:not(:empty) {
+    display      : inline-block;
+    margin-bottom: 8px;
+    font-size    : .8rem;
+}
+
+.Host.Empty .InputText:hover {
+    color: rgba(0, 0, 0, .54);
+}
+
+.Host.Invalid .InputText {
+    border-color: #F40;
+    color       : rgba(0, 0, 0, 1);
+}
+
+.Host.Focused .InputText {
+    border-color: #2196F3;
+    color       : inherit;
+}
+
+.Host.Disabled .InputText {
+    border-color: #DDD;
+    border-style: dotted;
+    color       : rgba(0, 0, 0, .38);
+}
+
+.Host.Invalid .LabelText {
+    color: #F40;
+}
+
+.Host.Focused .LabelText {
+    color: #2196F3;
+}
+
+.Host.Disabled .LabelText {
+}
+
+.Host:not(.Empty)   .LabelText,
+.Host.Empty.Focused .LabelText {
+    transform: translate(-50%) scale(0.75) translate(50%);
+}

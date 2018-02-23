@@ -58,7 +58,7 @@ export default class extends React.Component {
                         room: {
                             id: roomId
                         },
-                        subscriber: messages => this.setState({messages}) && console.log(messages)
+                        subscriber: messages => this.setState({messages})
                     })
                 ]
             })
@@ -86,21 +86,20 @@ export default class extends React.Component {
                 className={classNames.Host}
             >
                 {roomId ? this.state.messages.map(x => 
-                    <div>
-                        {x.type == "text" ? <div
-                            key={x.id}
-                        >
-                            {x.value}
-                        </div>
-                      :                     <div
-                            key={x.id}
-                        >
-                            // TODO
-                        </div>
-                        }
+                    x.type == "text" ? <div
+                        key={x.id}
+                    >
+                        {x.value}
+                    </div>
+                  :                     <div
+                        key={x.id}
+                    >
+                        // TODO
                     </div>
                 )
-              :     <div>none</div>
+              :     <div
+                        key="none"
+                    >none</div>
                 }
             </div>
         )
