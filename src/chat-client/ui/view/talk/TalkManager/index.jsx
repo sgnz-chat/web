@@ -3,7 +3,6 @@ import queryString      from "query-string"
 import FriendNavigation from "chat-client/ui/view/navigation/FriendNavigation"
 import RoomNavigation   from "chat-client/ui/view/navigation/RoomNavigation"
 import SubNavigation    from "chat-client/ui/view/navigation/SubNavigation"
-import SubNavigation    from "chat-client/ui/view/talk/TalkManager"
 
 import classNames from "chat-client/ui/view/talk/TalkPage/classNames"
 
@@ -33,9 +32,6 @@ export default class extends React.Component {
             ...props
         } = this.props
 
-        const Component = subNavigationType == "friend" ? FriendNavigation
-                        :                                 RoomNavigation
-        
         return (
             <div
                 className={classNames.Host}
@@ -46,9 +42,9 @@ export default class extends React.Component {
                         user={user}
                     />
                 </SubNavigation>
-                <TalkManager>
-                    test
-                </TalkManager>
+                <div>
+
+                </div>
             </div>
         )
     }

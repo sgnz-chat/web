@@ -8,6 +8,6 @@
     flex-grow: 1;
 }
 
-.List > * {
+.List > * > * {
     color: white;
 }

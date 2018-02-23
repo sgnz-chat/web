@@ -1,0 +1,9 @@
+.Host {
+    display: flex;
+    height : 100%;
+}
+
+.Host > :last-child {
+    display       : flex;
+    flex-direction: column;
+}

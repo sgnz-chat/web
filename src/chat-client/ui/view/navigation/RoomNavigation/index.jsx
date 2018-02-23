@@ -18,21 +18,27 @@ export default class extends React.Component {
                         subsclibe
                     }
                 },
-                user = {},
+                user,
                 ...props
             } = this.props
 
-            console.log(user, "debug")
-            console.log("debug debug debug ")
-            user.friends && user.friends.map(x => console.log(x))
+
         })()
     }
 
     render() {
+        const {
+            user,
+            ...props
+        } = this.props
+
         return (
             <List>
-                <ListItem>ropm</ListItem>
-                <ListItem>room</ListItem>
+                {user.friends.map((x, i) => 
+                    <ListItem
+                        key={i}
+                    >{x.name}</ListItem>
+                )}
             </List>
         )
     }
