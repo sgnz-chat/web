@@ -1,8 +1,9 @@
-import React        from "react"
-import bind         from "api-common/util/bind"
-import * as roomApi from "api-common/api/room"
-import * as userApi from "api-common/api/user"
-import config       from "api-common/config"
+import React               from "react"
+import bind                from "api-common/util/bind"
+import * as roomApi        from "api-common/api/room"
+import * as roomMessageApi from "api-common/api/room/message"
+import * as userApi        from "api-common/api/user"
+import config              from "api-common/config"
 
 export default class extends React.Component {
 
@@ -24,13 +25,14 @@ export default class extends React.Component {
         
         return render({
             databaseApi: {
-                roomApi: bind(roomApi, {token}),
-                userApi: bind(userApi, {
+                roomApi       : bind(roomApi, {token}),
+                roomMessageApi: bind(roomMessageApi, {token}),
+                userApi       : bind(userApi, {
                     user: {
                         id: token && token.user.uid
                     },
                     token
-                })
+                }),
             },
             tokenApi,
             ...props

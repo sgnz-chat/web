@@ -1,0 +1,9 @@
+.Host {
+    display       : flex;
+    flex-direction: column;
+    height        : 100%;
+}
+
+.Host > :first-child {
+    flex-grow: 1;
+}

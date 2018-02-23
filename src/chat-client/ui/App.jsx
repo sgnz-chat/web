@@ -1,7 +1,7 @@
 import ErrorListener           from "chat-client/ui/view/ErrorListener"
 import MainLayout              from "chat-client/ui/view/MainLayout"
 import SignInPage              from "chat-client/ui/view/auth/SignInPage"
-import TalkPage                from "chat-client/ui/view/talk/TalkPage"
+import RoomPage                from "chat-client/ui/view/room/RoomPage"
 import UserPage                from "chat-client/ui/view/user/UserPage"
 import DatabaseApi             from "chat-client/ui/wrapper/DatabaseApi"
 import TokenApi                from "chat-client/ui/wrapper/auth/TokenApi"
@@ -65,12 +65,11 @@ export default props =>
                     <ComposingRoute
                         exact
                         path="/"
-                        component={TalkPage}
+                        component={RoomPage}
                     />
                     <ComposingRoute
-                        exact
-                        path="/talks"
-                        component={TalkPage}
+                        path="/rooms"
+                        component={RoomPage}
                     />
                     <ComposingRoute
                         path="/sign_in"

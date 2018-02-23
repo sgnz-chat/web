@@ -1,41 +1,46 @@
 import React            from "react"
-import queryString      from "query-string"
 import FriendNavigation from "chat-client/ui/view/navigation/FriendNavigation"
 import RoomNavigation   from "chat-client/ui/view/navigation/RoomNavigation"
 import SubNavigation    from "chat-client/ui/view/navigation/SubNavigation"
-import SubNavigation    from "chat-client/ui/view/talk/TalkManager"
+import RoomManager      from "chat-client/ui/view/room/RoomManager"
 
-import classNames from "chat-client/ui/view/talk/TalkPage/classNames"
+import classNames from "chat-client/ui/view/room/RoomPage/classNames"
 
 export default class extends React.Component {
     componentWillMount() {
+        this.setState({
+            roomId: undefined
+        })
     }
 
     componentDidMount() {
-        ;(async () => {
-            const {
-                databaseApi: {
-                    roomApi: {
-                        subsclibe
-                    }
-                },
-                user = {},
-                ...props
-            } = this.props
+        const params = location.pathname.match(/^\/rooms\/(.*)/)
+
+        this.setState({
+            roomId: params && params[1]
+        })
+    }
+
+    componentWillReceiveProps(props) {
+        const params = props.location.pathname.match(/^\/rooms\/(.*)/)
+
+        this.setState({
+            roomId: params && params[1]
         })
     }
 
     render() {
         const {
             databaseApi,
+            location,
             subNavigationType,
-            user = {},
+            user,
             ...props
         } = this.props
 
         const Component = subNavigationType == "friend" ? FriendNavigation
                         :                                 RoomNavigation
-        
+
         return (
             <div
                 className={classNames.Host}
@@ -46,9 +51,11 @@ export default class extends React.Component {
                         user={user}
                     />
                 </SubNavigation>
-                <TalkManager>
-                    test
-                </TalkManager>
+                <RoomManager
+                    databaseApi={databaseApi}
+                    roomId={this.state.roomId}
+                    user={user}
+                />
             </div>
         )
     }

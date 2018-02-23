@@ -1,0 +1,9 @@
+.Host {
+    display: flex;
+    height : 100%;
+}
+
+.Host > :last-child {
+    border-left: 1px solid #bbb;
+    flex-grow  : 1;
+}

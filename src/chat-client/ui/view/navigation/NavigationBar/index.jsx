@@ -18,8 +18,8 @@ export default ({
         <ListItem
             onClick={() => {
                 onChange("friend")
-                if (!new RegExp("^" + "/talks").test(location.pathname))
-                    history.push("/talks")
+                if (!new RegExp("^" + "/rooms").test(location.pathname))
+                    history.push("/rooms")
             }}
         >
             <ListItemIcon>{'\uf007'}</ListItemIcon>
@@ -28,8 +28,8 @@ export default ({
         <ListItem
             onClick={() => {
                 onChange("room")
-                if (!new RegExp("^" + "/talks").test(location.pathname))
-                    history.push("/talks")
+                if (!new RegExp("^" + "/rooms").test(location.pathname))
+                    history.push("/rooms")
             }}
         >
             <ListItemIcon>{'\uf007'}</ListItemIcon>

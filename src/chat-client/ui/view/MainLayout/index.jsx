@@ -29,19 +29,31 @@ export default class extends React.Component {
             const {
                 tokenApi,
                 databaseApi: {
-                    userApi
+                    userApi,
+                    roomMessageApi
                 }
             } = this.props
 
+            const user = await userApi.read()
+
+            const unsubscribers = user.rooms.map(x => roomMessageApi.subscribe({
+                room: {
+                    id: x.id
+                },
+                subscriber: messages => console.log(x.id, messages)
+            }))
+
             this.setState({
-                user: await userApi.read()
+                user,
+                unsubscribers
             })
             
         })()
     }
 
     componentWillUnmount() {
-
+        for (let f of this.state.unsubscribers)
+            f()
     }
 
     render() {
@@ -106,13 +118,10 @@ export default class extends React.Component {
                         subNavigationType: type
                     })}
                 />
-                {[<main
+                {<main
                     className={classNames.Main}
-                    key={
-                        "/users/" + token.uid
-                    }
                 >
-                    {React.cloneElement(
+                    {this.state.user && React.cloneElement(
                         children,
                         {
                             history,
@@ -124,7 +133,7 @@ export default class extends React.Component {
                             ...children.props
                         }
                     )}
-                </main>]}
+                </main>}
             </div>
         )
     }
