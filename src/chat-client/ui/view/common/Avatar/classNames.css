@@ -1,0 +1,7 @@
+.Host {
+    display        : inline-flex;
+    align-items    : center;
+    border         : 1px solid rgba(0, 0, 0, .12);
+    border-radius  : 50%;
+    background-size: cover;
+}

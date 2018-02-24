@@ -1,0 +1,71 @@
+.Text {
+    font-size   : 1rem;
+    margin      : .1rem .5rem;
+    height      : min-content;
+    max-width   : 20rem;
+    white-space : pre-wrap;
+    word-wrap   : break-word;
+    font-family : Ruda, sans-serif;
+}
+
+.ArrowBox {
+    position      : relative;
+    border        : 1px solid #bfbfbf;
+    border-radius : 8px;
+    height        : min-content;
+}
+
+.ArrowBox:after, .ArrowBox:before {
+    border         : solid transparent;
+    content        : " ";
+    height         : 0;
+    width          : 0;
+    position       : absolute;
+    pointer-events : none;
+}
+
+.ArrowBox:after {
+    border-color : rgba(136, 183, 213, 0);
+    border-width : .35rem;
+    margin-top   : -4px;
+}
+
+.ArrowBox:before {
+    border-color : rgba(194, 225, 245, 0);
+    border-width : .4rem;
+    margin-top   : -5px;
+}
+
+.Left {
+    align-self  : flex-start;
+    margin-left : 1rem;
+}
+
+.Left:before {
+    border-right-color : inherit;
+    right              : 100%;
+    top                : 1rem;
+}
+
+.Left:after {
+    border-right-color : inherit;
+    right              : 100%;
+    top                : 1rem;
+}
+
+.Right {
+    align-self   : flex-end;
+    margin-right : 1rem;
+}
+
+.Right:before {
+    border-left-color : inherit;
+    left              : 100%;
+    top               : 1.1rem;
+}
+
+.Right:after {
+    border-left-color : inherit;
+    left              : 100%;
+    top               : 1.1rem;
+}

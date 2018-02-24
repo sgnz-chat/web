@@ -31,8 +31,10 @@ export default ({
                                     id: roomId
                                 },
                                 message: {
-                                    type : "text",
-                                    value: target.value 
+                                    senderId       : user.id,
+                                    senderAvatarUrl: user.avatarUrl,
+                                    type           : "text",
+                                    value          : target.value
                                 }
                             })
                         

@@ -29,7 +29,7 @@ export default class extends React.Component {
             <header
                 className={classNames.Host}
             >
-                <div>test</div>
+                <div>sgnz-chat</div>
             </header>
         )
     }

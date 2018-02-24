@@ -30,7 +30,6 @@ export default class extends React.Component {
                 <ListItem
                     className={classNames.AddFriendButton}
                 >
-                    {x.name}
                 </ListItem>
             </List>
         )

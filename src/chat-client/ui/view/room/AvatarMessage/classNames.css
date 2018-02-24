@@ -1,0 +1,20 @@
+.Host {
+    align-items: flex-start;
+    display    : flex;
+    min-height : max-content;
+}
+
+.Left {
+    align-self  : flex-start;
+    margin-left : 1rem;
+}
+
+.Right {
+    align-self   : flex-end;
+    margin-right : 1rem;
+}
+
+.Avatar {
+    width : 2.3rem;
+    height: 2.3rem;
+}

@@ -1,4 +1,6 @@
-import React from "react"
+import React         from "react"
+import AvatarMessage from "chat-client/ui/view/room/AvatarMessage"
+import Message       from "chat-client/ui/view/room/Message"
 
 import classNames from "chat-client/ui/view/room/MessageLog/classNames"
 
@@ -78,30 +80,50 @@ export default class extends React.Component {
             ...props
         } = this.props
 
-        console.log(roomId, this.state.messages)
-
         return (
             <div
                 className={classNames.Host}
             >
                 {roomId ? this.state.messages.map(x => 
                     x.type == "text" ? (
-                        <div
-                            key={x.id}
-                        >
-                            {x.value}
-                        </div>
+                        user.id == x.senderId ? 
+                            <Message
+                                key={x.id}
+                                position="right"
+                                text={x.value}
+                            />
+                      :     <AvatarMessage
+                                avatarUrl={x.senderAvatarUrl}
+                                key={x.id}
+                                position="left"
+                            >  
+                                <Message
+                                    text={x.value}
+                                />
+                            </AvatarMessage>
                     )
                   :                     (
-                        <div
-                            key={x.id}
-                        >
-                            // TODO
-                        </div>
+                        user.id == x.senderId ? 
+                            <Message
+                                key={x.id}
+                                position="right"
+                            >
+                                // TODO Image Message
+                            </Message>
+                      :     <AvatarMessage
+                                avatarUrl={x.senderAvatarUrl}
+                                key={x.id}
+                                position="left"
+                            >  
+                                <Message
+                                    text={x.value}
+                                />
+                            </AvatarMessage>
                     )
                 )
               :         (
                     <div
+                        className={classNames.None}
                         key="none"
                     >
                         none
