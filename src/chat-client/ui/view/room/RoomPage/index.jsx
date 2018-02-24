@@ -34,6 +34,7 @@ export default class extends React.Component {
         const {
             databaseApi,
             location,
+            subNavigationIsView,
             subNavigationType,
             user,
             ...props
@@ -48,7 +49,9 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                <SubNavigation>
+                <SubNavigation
+                    isView={subNavigationIsView}
+                >
                     <Component
                         databaseApi={databaseApi}
                         user={user}

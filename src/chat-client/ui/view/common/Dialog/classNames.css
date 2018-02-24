@@ -1,0 +1,32 @@
+.Root {
+    align-items     : center;
+    background-color: rgba(0, 0, 0, .1);
+    display         : flex;
+    height          : 100vh;
+    left            : 0;
+    position        : absolute;
+    top             : 0;
+    width           : 100vw;
+    z-index         : 1;
+}
+
+.Host {
+    background-color: #fefefe;
+    border-radius   : 2px;
+    display         : flex;
+    flex-direction  : column;
+    overflow        : hidden;
+    top             : 0;
+    left            : 0;
+    max-width       : calc(100vw - 16px);
+    min-width       : calc(56px * 5);
+    max-height      : calc(100vh - 16px);
+    margin          : 0 auto;
+}
+
+.Host.Visible {
+}
+
+.Host:not(.Visible) {
+    display: none;
+}

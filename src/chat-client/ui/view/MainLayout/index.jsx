@@ -9,7 +9,8 @@ import classNames from "chat-client/ui/view/MainLayout/classNames"
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
-            subNavigationType: "friend"
+            subNavigationIsView: true,
+            subNavigationType  : "friend"
         })
     }
 
@@ -19,14 +20,22 @@ export default class extends React.Component {
 
             if (window.Notification && Notification.permission === "default")
                 Notification.requestPermission(r => {
-                    if(r === "granted")
-                        notification(new Notification(
+                    if (r === "granted") {
+
+                        const x = new Notification(
                             "Welcome to Sgnz Chat!",
                             {
                                 body: "通知をおしらせします。",
                                 icon: "/img/sgnz-chat-notification.png"
                             }
-                        ))
+                        )
+
+                        x.onclick = _ => {
+                            window.focus();
+                            x.close()
+                        }
+                        setTimeout(_ => x.close(), 5000)
+                    }
                 })
             
             const token = await new Promise((resolve, reject) => {
@@ -141,7 +150,9 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                <Header/>
+                <Header
+                    onNavButtonClick={_ => this.setState({subNavigationIsView: !this.state.subNavigationIsView})}
+                />
                 <div>
                     <NavigationBar
                         history={history}
@@ -159,6 +170,7 @@ export default class extends React.Component {
                             {
                                 history,
                                 location,
+                                subNavigationIsView: this.state.subNavigationIsView,
                                 subNavigationType: this.state.subNavigationType,
                                 tokenApi,
                                 user: this.state.user,

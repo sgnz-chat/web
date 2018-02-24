@@ -14,6 +14,10 @@ export default ({
 }) => 
     <List
         className={classNames.Host}
+        orientation={
+            window.innerWidth > 767 ? "vertical"
+          :                           "horizontal"
+        }
     >
         <ListItem
             onClick={() => {

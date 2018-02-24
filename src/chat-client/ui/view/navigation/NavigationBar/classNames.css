@@ -3,11 +3,29 @@
     height: 100%;
     width : 12rem;
 }
-
+/* 
 .Host > :last-child {
     flex-grow: 1;
+} */
+
+@media (max-width: 767px) {
+    .Host {
+        display   : flex;
+        max-height: 4rem;
+        min-height: 4rem;
+        width     : 100%;
+    }
+
+    .Host > * {
+        justify-content: center;
+    }
 }
 
-.List > * > * {
-    color: white;
+@media only screen and (max-width: 480px) {
+    .Host > * {
+        font-size      : 2rem;
+    }
+    .Host > * > :nth-child(2) {
+        display: none;
+    }
 }

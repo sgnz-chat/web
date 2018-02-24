@@ -25,7 +25,9 @@ export default ({
                     if ( e.shiftKey && e.keyCode == 13) {
                     } else if (e.keyCode == 13 && target.value != "") {
                         e.preventDefault();
-                        if(target.value.match(/\S/g))
+                        const value = target.value;
+                        target.value = "";
+                        if(value.match(/\S/g))
                             await create({
                                 room : {
                                     id: roomId
@@ -34,11 +36,10 @@ export default ({
                                     senderId       : user.id,
                                     senderAvatarUrl: user.avatarUrl,
                                     type           : "text",
-                                    value          : target.value
+                                    value
                                 }
                             })
                         
-                        target.value = "";
                     }
                 }}
                 name="textMessage"

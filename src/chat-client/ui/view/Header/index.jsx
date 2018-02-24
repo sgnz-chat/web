@@ -1,4 +1,5 @@
 import React            from "react"
+import FontAwesome      from "chat-client/ui/view/common/FontAwesome"
 import List             from "chat-client/ui/view/common/List"
 import ListItem         from "chat-client/ui/view/common/ListItem"
 
@@ -21,6 +22,7 @@ export default class extends React.Component {
 
     render() {
         const {
+            onNavButtonClick = e => undefined,
             user,
             ...props
         } = this.props
@@ -29,7 +31,15 @@ export default class extends React.Component {
             <header
                 className={classNames.Host}
             >
-                <div>sgnz-chat</div>
+                {window.innerWidth < 767 
+             && <FontAwesome 
+                    onClick={onNavButtonClick}
+                    className={classNames.NavButton}
+                >
+                    {'\uf0c9'}
+                </FontAwesome>
+                }
+                <div className={classNames.Title}>sgnz-chat</div>
             </header>
         )
     }

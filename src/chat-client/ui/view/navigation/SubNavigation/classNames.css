@@ -1,3 +1,23 @@
 .Host {
-    width: 14rem;
+    transition: all .3s ease;
+    width     : 14rem;
+}
+
+.Hide {}
+
+@media (max-width: 767px) {
+    .Host {
+        background-color: white;
+        bottom          : 0;
+        box-shadow      : 4px 1px 7px 2px rgba(0,0,0,.3);
+        left            : 0;
+        position        : fixed;
+        padding-top     : 4rem;
+        top             : 0;
+        z-index         : 1;
+    }
+
+    .Hide {
+        left: -15rem;
+    }
 }
