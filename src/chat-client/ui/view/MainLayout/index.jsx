@@ -1,6 +1,7 @@
 import React                from "react"
 import ReactDOM             from "react-dom"
 import { Redirect }         from "react-router"
+import Header               from "chat-client/ui/view/Header"
 import NavigationBar        from "chat-client/ui/view/navigation/NavigationBar"
 
 import classNames from "chat-client/ui/view/MainLayout/classNames"
@@ -111,29 +112,33 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                <NavigationBar
-                    history={history}
-                    location={location}
-                    onChange={type => this.setState({
-                        subNavigationType: type
-                    })}
-                />
-                {<main
-                    className={classNames.Main}
-                >
-                    {this.state.user && React.cloneElement(
-                        children,
-                        {
-                            history,
-                            location,
-                            subNavigationType: this.state.subNavigationType,
-                            tokenApi,
-                            user: this.state.user,
-                            ...props,
-                            ...children.props
-                        }
-                    )}
-                </main>}
+                <Header/>
+                <div>
+                    <NavigationBar
+                        history={history}
+                        location={location}
+                        onChange={type => this.setState({
+                            subNavigationType: type
+                        })}
+                        selectedType={this.state.subNavigationType}
+                    />
+                    {<main
+                        className={classNames.Main}
+                    >
+                        {this.state.user && React.cloneElement(
+                            children,
+                            {
+                                history,
+                                location,
+                                subNavigationType: this.state.subNavigationType,
+                                tokenApi,
+                                user: this.state.user,
+                                ...props,
+                                ...children.props
+                            }
+                        )}
+                    </main>}
+                </div>
             </div>
         )
     }

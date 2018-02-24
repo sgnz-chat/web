@@ -1,8 +1,9 @@
-import React            from "react"
-import FriendNavigation from "chat-client/ui/view/navigation/FriendNavigation"
-import RoomNavigation   from "chat-client/ui/view/navigation/RoomNavigation"
-import SubNavigation    from "chat-client/ui/view/navigation/SubNavigation"
-import RoomManager      from "chat-client/ui/view/room/RoomManager"
+import React               from "react"
+import AddFriendNavigation from "chat-client/ui/view/navigation/AddFriendNavigation"
+import FriendNavigation    from "chat-client/ui/view/navigation/FriendNavigation"
+import RoomNavigation      from "chat-client/ui/view/navigation/RoomNavigation"
+import SubNavigation       from "chat-client/ui/view/navigation/SubNavigation"
+import RoomManager         from "chat-client/ui/view/room/RoomManager"
 
 import classNames from "chat-client/ui/view/room/RoomPage/classNames"
 
@@ -38,8 +39,10 @@ export default class extends React.Component {
             ...props
         } = this.props
 
-        const Component = subNavigationType == "friend" ? FriendNavigation
-                        :                                 RoomNavigation
+        const Component = subNavigationType == "friend"    ? FriendNavigation
+                        : subNavigationType == "room"      ? RoomNavigation
+                        : subNavigationType == "addFriend" ? AddFriendNavigation
+                        :                                    RoomNavigation
 
         return (
             <div

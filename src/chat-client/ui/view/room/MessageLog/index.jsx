@@ -18,7 +18,6 @@ export default class extends React.Component {
                 roomMessageApi: {
                     subscribe
                 },
-                user,
                 ...props
             } = this.props
 
@@ -86,20 +85,28 @@ export default class extends React.Component {
                 className={classNames.Host}
             >
                 {roomId ? this.state.messages.map(x => 
-                    x.type == "text" ? <div
-                        key={x.id}
+                    x.type == "text" ? (
+                        <div
+                            key={x.id}
+                        >
+                            {x.value}
+                        </div>
+                    )
+                  :                     (
+                        <div
+                            key={x.id}
+                        >
+                            // TODO
+                        </div>
+                    )
+                )
+              :         (
+                    <div
+                        key="none"
                     >
-                        {x.value}
-                    </div>
-                  :                     <div
-                        key={x.id}
-                    >
-                        // TODO
+                        none
                     </div>
                 )
-              :     <div
-                        key="none"
-                    >none</div>
                 }
             </div>
         )

@@ -2,7 +2,7 @@ import React            from "react"
 import List             from "chat-client/ui/view/common/List"
 import ListItem         from "chat-client/ui/view/common/ListItem"
 
-import classNames from "chat-client/ui/view/navigation/FriendNavigation/classNames"
+import classNames from "chat-client/ui/view/navigation/AddFriendNavigation/classNames"
 
 export default class extends React.Component {
     componentWillMount() {
@@ -27,12 +27,11 @@ export default class extends React.Component {
 
         return (
             <List>
-                {user.friends.map((x, i) => 
-                    <ListItem
-                        key={i}
-                        to={"/rooms/" + x.roomId}
-                    >{x.name}</ListItem>
-                )}
+                <ListItem
+                    className={classNames.AddFriendButton}
+                >
+                    {x.name}
+                </ListItem>
             </List>
         )
     }

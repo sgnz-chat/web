@@ -11,13 +11,13 @@ export default ({
     roomMessageApi: {
         create
     },
+    user,
     ...props
 }) =>
     <div
         className={[className, classNames.Host].join(" ")}
         {...props}
     >
-
             <TextField
                 multiLine
                 onKeyDown={async e => {
@@ -42,6 +42,5 @@ export default ({
                 name="textMessage"
                 labelText="メッセージを送信"
                 autoFocus={true}
-                required
             />
     </div>

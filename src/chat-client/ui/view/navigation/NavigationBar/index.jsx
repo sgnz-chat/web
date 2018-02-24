@@ -9,7 +9,7 @@ export default ({
     location,
     onChange = () => undefined,
     history,
-    tokenApi,
+    selectedType,
     ...props
 }) => 
     <List
@@ -21,6 +21,7 @@ export default ({
                 if (!new RegExp("^" + "/rooms").test(location.pathname))
                     history.push("/rooms")
             }}
+            selected={selectedType == "friend"}
         >
             <ListItemIcon>{'\uf007'}</ListItemIcon>
             <div>友達</div>
@@ -31,14 +32,30 @@ export default ({
                 if (!new RegExp("^" + "/rooms").test(location.pathname))
                     history.push("/rooms")
             }}
+            selected={selectedType == "room"}
         >
-            <ListItemIcon>{'\uf007'}</ListItemIcon>
+            <ListItemIcon>{'\uf27a'}</ListItemIcon>
             <div>ルーム</div>
         </ListItem>
         <ListItem
-            to={"/setting"}
+            onClick={() => {
+                onChange("addFriend")
+                if (!new RegExp("^" + "/rooms").test(location.pathname))
+                    history.push("/rooms")
+            }}
+            selected={selectedType == "addFriend"}
         >
-            <ListItemIcon>{'\uf007'}</ListItemIcon>
+            <ListItemIcon>{'\uf234'}</ListItemIcon>
+            <div>友達追加</div>
+        </ListItem>
+        <ListItem
+            to={"/setting"}
+            onClick={() => {
+                onChange("setting")
+            }}
+            selected={selectedType == "setting"}
+        >
+            <ListItemIcon>{'\uf013'}</ListItemIcon>
             <div>設定</div>
         </ListItem>
     </List>

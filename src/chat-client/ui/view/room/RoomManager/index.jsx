@@ -62,10 +62,12 @@ export default class extends React.Component {
                 <MessageLog
                     roomId={roomId}
                     roomMessageApi={roomMessageApi}
+                    user={user}
                 />
                 <ChatPanel
                     roomId={roomId}
                     roomMessageApi={roomMessageApi}
+                    user={user}
                 />
             </div>
         )

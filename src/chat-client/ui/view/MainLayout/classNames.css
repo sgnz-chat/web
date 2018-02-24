@@ -1,8 +1,18 @@
 .Host {
     background-color: #f0f1f5;
     display         : flex;
+    flex-direction  : column;
     height          : 100vh;
     width           : 100vw;
+}
+
+.Host > :first-child {
+    z-index: 1;
+}
+
+.Host > :nth-child(2) {
+    display: flex;
+    height : 100%;
 }
 
 .Main {
