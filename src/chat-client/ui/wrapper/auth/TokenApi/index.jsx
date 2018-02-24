@@ -1,9 +1,11 @@
-import React  from "react"
-import config from "api-common/config"
+import React        from "react"
+import * as userApi from "api-common/api/user"
+import config       from "api-common/config"
 
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
+            auth       : undefined,
             subscribers: [],
             token      : undefined
         })
@@ -18,6 +20,21 @@ export default class extends React.Component {
                 )
             )
 
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    this.setState({
+                        token: {
+                            type: "firebase",
+                            user: auth.currentUser
+                        }
+                    })
+                } else {
+                }
+            });
+
+            console.log(auth.currentUser)
+            this.setState({auth})
+
             if (auth.currentUser) {
                 this.setState({
                     token: {
@@ -26,6 +43,7 @@ export default class extends React.Component {
                     }
                 })
             }
+
         })()
     }
 
@@ -36,7 +54,50 @@ export default class extends React.Component {
         } = this.props
 
         return render({
+            credentialApi: {
+                createUserWithEmailAndPassword: async ({
+                    email,
+                    password
+                }) => {
+                    let x = await firebase.auth().createUserWithEmailAndPassword(email, password)
+
+                    // todo check email
+                    // await x.sendEmailVerification()
+
+                    await userApi.create({
+                        user: {
+                            id         : x.uid,
+                            avatarUrl  : "http://placehold.jp/464ed6/ffffff/150x150.png?text=Avatar",
+                            displayName: "unname",
+                            email,
+                            friends    : [],
+                            name       : "unname",
+                        },
+                        token: {
+                            user: x
+                        }
+                    })
+
+                    return x
+                },
+                updatePassword: async ({
+                    password,
+                    newPassword
+                }) => {
+                    let user = firebase.auth(this.state.token.app).currentUser
+                    
+                    await user.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(
+                        user.email,
+                        password
+                    ))
+
+                    await user.updatePassword(newPassword)
+
+                    return true
+                }
+            },
             tokenApi: {
+                auth: this.state.auth,
                 create: async ({
                     staySignedIn,
                     email,

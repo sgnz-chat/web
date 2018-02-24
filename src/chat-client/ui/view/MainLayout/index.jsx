@@ -69,6 +69,7 @@ export default class extends React.Component {
 
         const token = tokenApi.read();
 
+        console.log(token, "MainLayout")
         try {
 
             if (token) {

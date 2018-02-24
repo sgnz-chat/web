@@ -1,7 +1,7 @@
 .Host {
     background-color: rgba(45, 54, 73, 1);
     height: 100%;
-    width : 10rem;
+    width : 12rem;
 }
 
 .Host > :last-child {

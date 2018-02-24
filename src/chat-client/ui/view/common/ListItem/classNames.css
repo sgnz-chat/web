@@ -19,7 +19,7 @@
     background-color: rgba(0, 0, 0, .05);
 }
 
-.Host.Selected:nth-child(1) {
+.Host.Selected {
     color : #2196F3;
     cursor: default;
 }
