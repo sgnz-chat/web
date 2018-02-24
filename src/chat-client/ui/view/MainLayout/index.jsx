@@ -15,6 +15,19 @@ export default class extends React.Component {
 
     componentDidMount() {
         ;(async _ => {
+
+
+            if (window.Notification && Notification.permission === "default")
+                Notification.requestPermission(r => {
+                    if(r === "granted")
+                        notification(new Notification(
+                            "Welcome to Sgnz Chat!",
+                            {
+                                body: "通知をおしらせします。",
+                                icon: "/img/sgnz-chat-notification.png"
+                            }
+                        ))
+                })
             
             const token = await new Promise((resolve, reject) => {
                 const loop = _ => {
@@ -35,7 +48,23 @@ export default class extends React.Component {
                 }
             } = this.props
 
-            const user = await userApi.read()
+            let user = await userApi.read()
+
+            if (!user) {
+                const x = tokenApi.read();
+                await userApi.create({
+                    user: {
+                        id         : x.user.uid,
+                        avatarUrl  : x.photoURL    || "http://placehold.jp/464ed6/ffffff/150x150.png?text=Avatar",
+                        displayName: x.displayName || "unname",
+                        email      : x.email       || "",
+                        friends    : [],
+                        name       : x.name || "unname",
+                        rooms      : []
+                    }
+                })
+                user = await userApi.read()
+            }
 
             const unsubscribers = user.rooms.map(x => roomMessageApi.subscribe({
                 room: {
@@ -69,7 +98,6 @@ export default class extends React.Component {
 
         const token = tokenApi.read();
 
-        console.log(token, "MainLayout")
         try {
 
             if (token) {

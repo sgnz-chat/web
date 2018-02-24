@@ -1,5 +1,4 @@
 import React     from "react"
-import TextField from "chat-client/ui/view/common/TextField"
 
 import classNames from "chat-client/ui/view/auth/SignInPage/classNames"
 
@@ -82,51 +81,6 @@ export default class extends React.Component {
                     <div className={classNames.Title}>sgnz-chat</div>
                     <div className={classNames.Content}>
                         <div id="firebaseui-auth-container"></div>
-                        <form
-                            className={classNames.Form}
-                            onSubmit={async e => {
-                                e.preventDefault()
-
-                                this.setState({
-                                    isSending: true
-                                })
-
-                                try {
-                                    const form = e.target
-
-                                    await createUserWithEmailAndPassword({
-                                        email       : form.elements["email"].value,
-                                        password    : form.elements["password"].value
-                                    })
-                                } catch (e) {
-                                    onError(e)
-
-                                    this.setState({
-                                        isSending: false
-                                    })
-                                }
-                            }}
-                        >
-                            <div>
-                                <TextField
-                                    autoComplete="email"
-                                    name="email"
-                                    type="password"
-                                    labelText="メールアドレス"
-                                />
-                                <TextField
-                                    autoComplete="current-password"
-                                    name="password"
-                                    type="password"
-                                    labelText="パスワード"
-                                />
-                                <button
-                                    className={classNames.Button}
-                                >
-                                    新規登録
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>

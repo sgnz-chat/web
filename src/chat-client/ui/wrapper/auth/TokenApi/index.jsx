@@ -32,7 +32,6 @@ export default class extends React.Component {
                 }
             });
 
-            console.log(auth.currentUser)
             this.setState({auth})
 
             if (auth.currentUser) {
