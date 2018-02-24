@@ -1,4 +1,5 @@
 import React            from "react"
+import Button           from "chat-client/ui/view/common/Button"
 import List             from "chat-client/ui/view/common/List"
 import ListItem         from "chat-client/ui/view/common/ListItem"
 
@@ -27,10 +28,12 @@ export default class extends React.Component {
 
         return (
             <List>
-                <ListItem
-                    className={classNames.AddFriendButton}
+                <Button
+                    className={classNames.Button}
+                    type="raised"
                 >
-                </ListItem>
+                    友達追加
+                </Button>
             </List>
         )
     }

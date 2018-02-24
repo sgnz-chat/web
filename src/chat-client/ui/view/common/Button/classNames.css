@@ -1,0 +1,79 @@
+.Host {
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: space-around;
+    border-width   : 0;
+    outline-width  : 0;
+    text-decoration: none;
+    white-space    : nowrap;
+    cursor         : pointer;
+    transition     : all .3s ease-out;
+    user-select    : none;
+    height         : 36px;
+}
+
+.Host.Disabled {
+    cursor: default;
+}
+
+.Host.Flat,
+.Host.Raised {
+    box-sizing   : border-box;
+    min-width    : 88px;
+    min-height   : 36px;
+    border-radius: 2px;
+    font-size    : .875rem;
+}
+
+.Host.Flat {
+    padding         : 0 8px;
+    background-color: transparent;
+}
+
+.Host.Flat:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.Host.Flat:active {
+    background-color: rgba(153, 153, 153, .4);
+}
+
+.Host.Flat.Disabled {
+    background-color: transparent;
+    color           : rgba(0, 0, 0, .26);
+}
+
+.Host.Raised {
+    padding         : 0 16px;
+    color           : #FFF;
+}
+
+.Host.Raised.Dense {
+    min-height : 32px;
+}
+
+.Host.Raised.Disabled {
+    background-color: rgba(0, 0, 0, .12);
+    color           : rgba(0, 0, 0, .26);
+}
+
+.Host.Raised:not(.Disabled):hover {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .24);
+}
+
+.Host.Flat.Blue:not(.Disabled) {
+    color: #2196F3;
+}
+
+.Host.Raised.Blue:not(.Disabled) {
+    background-color: #2196F3;
+}
+
+.Host.Flat.BlueGrey:not(.Disabled) {
+    color: #607D8B;
+}
+
+.Host.Raised.BlueGrey:not(.Disabled) {
+    background-color: #607D8B;
+}
+

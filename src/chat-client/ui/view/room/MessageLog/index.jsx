@@ -1,4 +1,5 @@
 import React         from "react"
+import ReactDOM      from "react-dom"
 import AvatarMessage from "chat-client/ui/view/room/AvatarMessage"
 import Message       from "chat-client/ui/view/room/Message"
 
@@ -31,7 +32,16 @@ export default class extends React.Component {
                             room: {
                                 id: roomId
                             },
-                            subscriber: messages => this.setState({messages})
+                            subscriber: messages => 
+                                this.setState(
+                                    {
+                                        messages
+                                    },
+                                    () => {
+                                        const e = ReactDOM.findDOMNode(this)
+                                        e.scrollTop = e.scrollHeight
+                                    }
+                                )
                         })
                     ]
                 })
@@ -59,7 +69,16 @@ export default class extends React.Component {
                         room: {
                             id: roomId
                         },
-                        subscriber: messages => this.setState({messages})
+                        subscriber: messages =>
+                            this.setState(
+                                {
+                                    messages
+                                },
+                                () => {
+                                    const e = ReactDOM.findDOMNode(this)
+                                    e.scrollTop = e.scrollHeight
+                                }
+                            )
                     })
                 ]
             })
@@ -96,7 +115,7 @@ export default class extends React.Component {
                                 avatarUrl={x.senderAvatarUrl}
                                 key={x.id}
                                 position="left"
-                            >  
+                            >
                                 <Message
                                     text={x.value}
                                 />
