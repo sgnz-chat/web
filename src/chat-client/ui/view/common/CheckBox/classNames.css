@@ -1,0 +1,32 @@
+.Host {
+    display      : inline-flex;
+    max-width    : .875rem;
+    min-width    : .875rem;
+    max-height   : .875rem;
+    min-height   : .875rem;
+    border       : .125rem solid #888888;
+    border-radius: 16%;
+    cursor       : pointer;
+    transition   : all .3s ease-out;
+}
+
+.Host.Selected {
+    border-color    : #2196F3;
+    background-color: #2196F3;
+}
+
+.Host::before {
+    display         : inline-block;
+    width           : .3125rem;
+    height          : .75rem;
+    border-bottom   : .125rem solid #fff;
+    border-right    : .125rem solid #fff;
+    transform       : translate(.1875rem, -.125rem) rotateZ(45deg) scale(0, 0);
+    transform-origin: center;
+    transition      : all .3s ease-out;
+    content         : "";
+}
+
+.Host.Selected::before {
+    transform: translate(.1875rem, -.125rem) rotateZ(45deg) scale(1, 1);
+}

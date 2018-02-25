@@ -26,6 +26,7 @@
 }
 
 .Host.Flat {
+    border          : 1px solid #eee;
     padding         : 0 8px;
     background-color: transparent;
 }

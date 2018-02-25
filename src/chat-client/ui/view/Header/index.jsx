@@ -1,4 +1,5 @@
 import React            from "react"
+import Button           from "chat-client/ui/view/common/Button"
 import FontAwesome      from "chat-client/ui/view/common/FontAwesome"
 import List             from "chat-client/ui/view/common/List"
 import ListItem         from "chat-client/ui/view/common/ListItem"
@@ -22,6 +23,7 @@ export default class extends React.Component {
 
     render() {
         const {
+            onSignOutButtonClcik = e => undefined,
             onNavButtonClick = e => undefined,
             user,
             ...props
@@ -40,6 +42,9 @@ export default class extends React.Component {
                 </FontAwesome>
                 }
                 <div className={classNames.Title}>sgnz-chat</div>
+                <Button
+                    onClick={onSignOutButtonClcik}
+                >ログアウト</Button>
             </header>
         )
     }

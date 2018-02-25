@@ -1,19 +1,21 @@
-import React            from "react"
-import Avatar           from "chat-client/ui/view/common/Avatar"
-import Button           from "chat-client/ui/view/common/Button"
-import Dialog           from "chat-client/ui/view/common/Dialog"
-import DialogBody       from "chat-client/ui/view/common/DialogBody"
-import DialogHeader     from "chat-client/ui/view/common/DialogHeader"
-import List             from "chat-client/ui/view/common/List"
-import ListItem         from "chat-client/ui/view/common/ListItem"
-import TextField        from "chat-client/ui/view/common/TextField"
+import React              from "react"
+import Button             from "chat-client/ui/view/common/Button"
+import List               from "chat-client/ui/view/common/List"
+import ListItem           from "chat-client/ui/view/common/ListItem"
+import ListItemAvatar     from "chat-client/ui/view/common/ListItemAvatar"
+import CreateGroupDialog  from "chat-client/ui/view/CreateGroupDialog"
+import SearchUserDialog   from "chat-client/ui/view/SearchUserDialog"
 
 import classNames from "chat-client/ui/view/navigation/AddFriendNavigation/classNames"
 
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
-            searchFriendDialogIsView: false
+            createGroupDialogIsView : false,
+            newGroupUserIds         : [],
+            searchFriendDialogIsView: false,
+            targetUser              : undefined,
+            targetUserIsFound       : undefined
         })
     }
 
@@ -30,13 +32,24 @@ export default class extends React.Component {
 
     render() {
         const {
+            databaseApi: {
+                roomApi: {
+                    create: createRoom
+                },
+                userApi: {
+                    read: readUser,
+                    update: updateUser
+                }
+            },
             user,
             ...props
         } = this.props
 
         return (
-            <div>
-                <List>
+            <div
+                className={classNames.Host}
+            >
+                <div>
                     <Button
                         className={classNames.Button}
                         onClick={() => this.setState({searchFriendDialogIsView: true})}
@@ -44,22 +57,30 @@ export default class extends React.Component {
                     >
                         友達検索
                     </Button>
+                    <Button
+                        className={classNames.Button}
+                        onClick={() => this.setState({createGroupDialogIsView: true})}
+                        type="raised"
+                    >
+                        グループ作成
+                    </Button>
+                </div>
+                <List>
                 </List>
-                <Dialog
+                <SearchUserDialog
+                    user={user}
+                    roomApi={this.props.databaseApi.roomApi}
+                    userApi={this.props.databaseApi.userApi}
                     onCancel={() => this.setState({searchFriendDialogIsView: false})}
                     isVisible={this.state.searchFriendDialogIsView}
-                >
-                    <DialogHeader>友達検索</DialogHeader>
-                    <DialogBody>
-                        <div>
-                            <TextField
-                                autoComplete="off"
-                                name="id"
-                                labelText="IDを入力"
-                            />
-                        </div>
-                    </DialogBody>
-                </Dialog>
+                />
+                <CreateGroupDialog
+                    user={user}
+                    roomApi={this.props.databaseApi.roomApi}
+                    userApi={this.props.databaseApi.userApi}
+                    onCancel={() => this.setState({createGroupDialogIsView: false})}
+                    isVisible={this.state.createGroupDialogIsView}
+                />
             </div>
         )
     }

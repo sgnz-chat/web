@@ -1,6 +1,11 @@
 .Host {
-    
+    margin: .5rem;   
 }
+
 .Button {
     width: 100%;
+}
+
+.Button:nth-child(n + 1) {
+    margin-top: .1rem;
 }

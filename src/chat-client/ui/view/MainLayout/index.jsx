@@ -6,6 +6,26 @@ import NavigationBar        from "chat-client/ui/view/navigation/NavigationBar"
 
 import classNames from "chat-client/ui/view/MainLayout/classNames"
 
+const executeNotification = ({
+    title,
+    body,
+}) => {
+    const x = new Notification(
+        title,
+        {
+            body,
+            icon: "/img/sgnz-chat-notification.png"
+        }
+    )
+
+    x.onclick = _ => {
+        window.focus();
+        x.close()
+    }
+    setTimeout(_ => x.close(), 5000)
+}
+
+
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
@@ -21,20 +41,10 @@ export default class extends React.Component {
             if (window.Notification && Notification.permission === "default")
                 Notification.requestPermission(r => {
                     if (r === "granted") {
-
-                        const x = new Notification(
-                            "Welcome to Sgnz Chat!",
-                            {
-                                body: "通知をおしらせします。",
-                                icon: "/img/sgnz-chat-notification.png"
-                            }
-                        )
-
-                        x.onclick = _ => {
-                            window.focus();
-                            x.close()
-                        }
-                        setTimeout(_ => x.close(), 5000)
+                        executeNotification({
+                            title: "Welcome to Sgnz Chat!",
+                            body: "通知をおしらせします。"
+                        })
                     }
                 })
             
@@ -75,11 +85,24 @@ export default class extends React.Component {
                 user = await userApi.read()
             }
 
-            const unsubscribers = user.rooms.map(x => roomMessageApi.subscribe({
+            const unsubscribers = user.rooms.map(room => roomMessageApi.subscribe({
                 room: {
-                    id: x.id
+                    id: room.id
                 },
-                subscriber: messages => console.log(x.id, messages)
+                subscriber: messages => {
+                    window.Notification && executeNotification({
+                        title: "新着メッセージ"
+                    })
+
+                    this.state.user.rooms = this.state.user.rooms.map(x => {
+                        if (x.id == room.id)
+                            x.messages = messages
+
+                        return x
+                    })
+
+                    this.forceUpdate()
+                }
             }))
 
             this.setState({
@@ -151,7 +174,17 @@ export default class extends React.Component {
                 className={classNames.Host}
             >
                 <Header
-                    onNavButtonClick={_ => this.setState({subNavigationIsView: !this.state.subNavigationIsView})}
+                    onSignOutButtonClcik={async _ => {
+                        await tokenApi.delete()
+                        console.log('delete')
+
+                        // TODO fix
+                        location.reload()
+                        history.push("/sign_in")
+                    }}
+                    onNavButtonClick={_ => 
+                        this.setState({subNavigationIsView: !this.state.subNavigationIsView})
+                    }
                 />
                 <div>
                     <NavigationBar

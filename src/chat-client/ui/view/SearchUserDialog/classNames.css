@@ -1,0 +1,24 @@
+
+.Result {
+    display       : flex;
+    flex-direction: column;
+    height        : 13rem;
+}
+
+.TargetUser {
+    align-items    : center;
+    display        : flex;
+    flex-direction : column;
+    flex-grow      : 1;
+    justify-content: center;
+}
+
+.TargetUser > :first-child {
+    height: 5rem;
+    margin: 1rem;
+    width : 5rem;
+}
+
+.TargetUser > :last-child > * {
+    margin: 0 .2rem;
+}

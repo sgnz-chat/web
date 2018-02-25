@@ -7,6 +7,7 @@ import classNames from "chat-client/ui/view/navigation/RoomNavigation/classNames
 
 export default ({
     user,
+    roomId,
     className,
     ...props
 }) => {
@@ -20,6 +21,7 @@ export default ({
                     <ListItem
                         key={room.id}
                         to={`/rooms/${room.id}`}
+                        selected={roomId == room.id}
                     >
                         <ListItemAvatar
                             src={

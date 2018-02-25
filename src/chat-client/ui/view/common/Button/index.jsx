@@ -8,7 +8,7 @@ export default ({
     component = "span",
     Component = component,
     dense,
-    disabled,
+    isDisable,
     type = "flat",
     ...props
 }) =>
@@ -17,8 +17,8 @@ export default ({
             [
                 className,
                 classNames.Host,
-                disabled ? classNames.Disabled
-              :            undefined,
+                isDisable ? classNames.Disabled
+              :             undefined,
                 dense ? classNames.Dense
               :         "",
                 type == "flat"   ? classNames.Flat

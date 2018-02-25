@@ -1,5 +1,5 @@
 import React        from "react"
-import LinearLayout from "react-material/ui/view/LinearLayout"
+import LinearLayout from "chat-client/ui/view/common/LinearLayout"
 
 import classNames from "chat-client/ui/view/common/DialogFooter/classNames"
 

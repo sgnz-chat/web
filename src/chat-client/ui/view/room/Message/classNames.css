@@ -61,11 +61,11 @@
 .Right:before {
     border-left-color : inherit;
     left              : 100%;
-    top               : 1.1rem;
+    top               : 1rem;
 }
 
 .Right:after {
     border-left-color : inherit;
     left              : 100%;
-    top               : 1.1rem;
+    top               : 1rem;
 }

@@ -8,87 +8,19 @@ import classNames from "chat-client/ui/view/room/MessageLog/classNames"
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
-            roomId       : undefined,
-            messages     : [],
-            unsubscribers: []
         })
     }
 
     componentDidMount() {
-        ;(async () => {
-            const {
-                roomId = undefined,
-                roomMessageApi: {
-                    subscribe
-                },
-                ...props
-            } = this.props
-
-            if (roomId)
-                this.setState({
-                    roomId,
-                    unsubscribers: [
-                        subscribe({
-                            room: {
-                                id: roomId
-                            },
-                            subscriber: messages => 
-                                this.setState(
-                                    {
-                                        messages
-                                    },
-                                    () => {
-                                        const e = ReactDOM.findDOMNode(this)
-                                        e.scrollTop = e.scrollHeight
-                                    }
-                                )
-                        })
-                    ]
-                })
-            
-        })
     }
 
     componentWillReceiveProps(props) {
 
-        const {
-            roomId = undefined,
-            roomMessageApi: {
-                subscribe
-            }
-        } = props
-
-        if (roomId && roomId !== this.state.roomId) {
-
-            for (let f of this.state.unsubscribers)
-                f()
-            console.log(roomId, "MessageLog")
-            this.setState({
-                unsubscribers: [
-                    subscribe({
-                        room: {
-                            id: roomId
-                        },
-                        subscriber: messages =>
-                            this.setState(
-                                {
-                                    messages
-                                },
-                                () => {
-                                    const e = ReactDOM.findDOMNode(this)
-                                    e.scrollTop = e.scrollHeight
-                                }
-                            )
-                    })
-                ]
-            })
-            
-        }
+        const e = ReactDOM.findDOMNode(this)
+        e.scrollTop = e.scrollHeight
     }
 
     componentWillUnmount() {
-        for (let f of this.state.unsubscribers)
-            f()
     }
 
     render() {
@@ -99,11 +31,13 @@ export default class extends React.Component {
             ...props
         } = this.props
 
+        const messages = (user.rooms.find(x => x.id == roomId) || {}).messages || []
+
         return (
             <div
                 className={classNames.Host}
             >
-                {roomId ? this.state.messages.map(x => 
+                {roomId ? messages.map(x => 
                     x.type == "text" ? (
                         user.id == x.senderId ? 
                             <Message

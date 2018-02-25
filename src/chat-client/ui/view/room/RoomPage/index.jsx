@@ -54,6 +54,7 @@ export default class extends React.Component {
                 >
                     <Component
                         databaseApi={databaseApi}
+                        roomId={this.state.roomId}
                         user={user}
                     />
                 </SubNavigation>

@@ -28,6 +28,9 @@ export default class extends React.Component {
                             user: auth.currentUser
                         }
                     })
+
+                    for (let f of this.state.subscribers)
+                        f(this.state.token)
                 } else {
                 }
             });
@@ -108,21 +111,10 @@ export default class extends React.Component {
                     else
                         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
-                    this.setState(
-                        {
-                            token: {
-                                type: "firebase",
-                                user: await firebase.auth().signInWithEmailAndPassword(email, password)
-                            }
-                        },
-                        () => {
-                            for (let f of this.state.subscribers)
-                                f(this.state.token)
-                        }
-                    )
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
                 },
-                delete: () => {
-                    firebase.auth().signOut()
+                delete: async () => {
+                    await firebase.auth().signOut()
 
                     for (let f of this.state.subscribers)
                         f(this.state.token)
