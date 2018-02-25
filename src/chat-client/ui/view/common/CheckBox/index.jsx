@@ -6,7 +6,7 @@ export default ({
     className,
     component = "span",
     Component = component,
-    isSelect = false,
+    selected = false,
     ...props
 }) =>
     <Component
@@ -14,7 +14,7 @@ export default ({
             [
                 className,
                 classNames.Host,
-                isSelect ? classNames.Selected
+                selected ? classNames.Selected
               :            undefined
             ].join(" ")
         }

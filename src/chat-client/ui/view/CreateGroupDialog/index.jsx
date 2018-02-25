@@ -39,11 +39,21 @@ export default class extends React.Component {
 
         return (
             <Dialog
-                onCancel={() => this.setState({createGroupDialogIsView: false})}
+                onCancel={_ => {
+                    if (!this.state.isProcessing) {
+                        this.setState({
+                            newGroupUserIds: [],
+                        })
+
+                        onCancel()
+                    }
+                }}
                 isVisible={this.state.createGroupDialogIsView}
+                {...props}
             >
                 <DialogHeader>グループ作成</DialogHeader>
                 <DialogBody
+                    className={classNames.Form}
                     component="form"
                     onSubmit={async e => {
                         e.preventDefault()
@@ -64,8 +74,8 @@ export default class extends React.Component {
 
                         await createRoom({
                             room: {
-                                name   : form.elements["name"].value,
-                                friends: this.state.newGroupUserIds
+                                name : form.elements["name"].value,
+                                users: this.state.newGroupUserIds
                             }
                         })
 
@@ -73,6 +83,7 @@ export default class extends React.Component {
                             isProcessing: false
                         })
 
+                        onCancel()
                     }}
                 >
                     <div>
@@ -88,9 +99,12 @@ export default class extends React.Component {
                     >
                         {user.friends.map((x, i) => 
                             <ListItem
+                                className={classNames.ListItem}
                                 onClick={() => this.setState({
-                                    newGroupUserIds: this.state.newGroupUserIds.concat(x.id)
+                                    newGroupUserIds: this.state.newGroupUserIds.includes(x.id) ? this.state.newGroupUserIds.filter(id => id != x.id)
+                                  :                                                              this.state.newGroupUserIds.concat(x.id)
                                 })}
+                                selected={this.state.newGroupUserIds.includes(x.id)}
                                 key={x.id}
                             >
                                 <ListItemAvatar
@@ -98,10 +112,7 @@ export default class extends React.Component {
                                 />
                                 <div>{x.displayName}</div>
                                 <CheckBox
-                                    onClick={() => this.setState({
-                                        newGroupUserIds: this.state.newGroupUserIds.concat(x.id)
-                                    })}
-                                    isSelect={this.state.newGroupUserIds.includes(x.id)}
+                                    selected={this.state.newGroupUserIds.includes(x.id)}
                                 />
                             </ListItem>
                         )}
@@ -110,12 +121,21 @@ export default class extends React.Component {
                         <Button
                             component="button"
                             color="BlueGrey"
-                            onClick={onCancel}
+                            disabled={this.state.isProcessing}
+                            onClick={_ => {
+                                if (!this.state.isProcessing) {
+                                    this.setState({
+                                        newGroupUserIds: [],
+                                    })
+
+                                    onCancel()
+                                }
+                            }}
                         >
                             キャンセル
                         </Button>
                         <Button
-                            isDisable={this.state.isProcessing}
+                            disabled={this.state.isProcessing}
                             component="button"
                         >
                             追加

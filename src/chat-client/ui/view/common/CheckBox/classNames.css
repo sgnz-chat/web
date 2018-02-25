@@ -5,7 +5,7 @@
     max-height   : .875rem;
     min-height   : .875rem;
     border       : .125rem solid #888888;
-    border-radius: 16%;
+    border-radius: 50%;
     cursor       : pointer;
     transition   : all .3s ease-out;
 }

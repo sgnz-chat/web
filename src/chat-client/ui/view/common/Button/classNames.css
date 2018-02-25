@@ -78,3 +78,10 @@
     background-color: #607D8B;
 }
 
+.Host.Flat.White:not(.Disabled) {
+    color: #fff;
+}
+
+.Host.Raised.White:not(.Disabled) {
+    background-color: #fff;
+}

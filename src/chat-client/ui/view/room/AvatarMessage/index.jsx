@@ -1,6 +1,5 @@
 import React   from "react"
 import Avatar  from "chat-client/ui/view/common/Avatar"
-import Message from "chat-client/ui/view/room/Message"
 
 import classNames from "chat-client/ui/view/room/AvatarMessage/classNames"
 

@@ -1,7 +1,8 @@
 import React         from "react"
 import ReactDOM      from "react-dom"
 import AvatarMessage from "chat-client/ui/view/room/AvatarMessage"
-import Message       from "chat-client/ui/view/room/Message"
+import MessageBox    from "chat-client/ui/view/room/MessageBox"
+import MessageText   from "chat-client/ui/view/room/MessageText"
 
 import classNames from "chat-client/ui/view/room/MessageLog/classNames"
 
@@ -40,37 +41,41 @@ export default class extends React.Component {
                 {roomId ? messages.map(x => 
                     x.type == "text" ? (
                         user.id == x.senderId ? 
-                            <Message
+                            <MessageBox
                                 key={x.id}
                                 position="right"
-                                text={x.value}
-                            />
+                            >
+                                <MessageText>
+                                    {x.value}
+                                </MessageText>
+                            </MessageBox>
                       :     <AvatarMessage
                                 avatarUrl={x.senderAvatarUrl}
                                 key={x.id}
                                 position="left"
                             >
-                                <Message
-                                    text={x.value}
-                                />
+                                <MessageBox>
+                                    <MessageText>
+                                        {x.value}
+                                    </MessageText>
+                                </MessageBox>
                             </AvatarMessage>
                     )
                   :                     (
                         user.id == x.senderId ? 
-                            <Message
+                            <MessageBox
                                 key={x.id}
                                 position="right"
                             >
                                 // TODO Image Message
-                            </Message>
+                            </MessageBox>
                       :     <AvatarMessage
                                 avatarUrl={x.senderAvatarUrl}
                                 key={x.id}
                                 position="left"
                             >  
-                                <Message
-                                    text={x.value}
-                                />
+                                <MessageBox>
+                                </MessageBox>
                             </AvatarMessage>
                     )
                 )

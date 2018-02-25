@@ -1,4 +1,18 @@
 
 .List {
-    overflow: auto;
+    max-height: 18em;
+    overflow  : auto;
+}
+
+.ListItem {
+    display: flex;
+}
+
+.ListItem > :nth-child(2) {
+    flex-grow: 1;
+}
+
+.Form > :last-child {
+    display        : flex;
+    justify-content: flex-end;
 }

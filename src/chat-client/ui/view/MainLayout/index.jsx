@@ -82,32 +82,61 @@ export default class extends React.Component {
                         rooms      : []
                     }
                 })
+                
                 user = await userApi.read()
             }
 
-            const unsubscribers = user.rooms.map(room => roomMessageApi.subscribe({
+            const roomMessageSubscriber = roomId => {}
+
+            const userUnsubscriber = userApi.subscribe({
+                subscriber: user => {
+                    const newRoom =  user.rooms.filter(room => !this.state.user.rooms.map(x => x.id).includes(room.id))
+
+                    if (newRoom) {
+                        newRoom
+                    }
+
+                    this.setState({user})
+                }
+            })
+            
+            const roomUnsubscribers = user.rooms.map(room => roomMessageApi.subscribe({
                 room: {
                     id: room.id
                 },
                 subscriber: messages => {
-                    window.Notification && executeNotification({
-                        title: "新着メッセージ"
+
+                    const targetRoom = (this.state.user.rooms.find(x => x.id == room.id) || {})
+
+                    const prevMessages = targetRoom.messages || []
+
+                    if (prevMessages.length < messages.length)
+                        window.Notification && executeNotification({
+                            title: room.type == "pair" ? (user.friends.find(x => room.id == x.roomId) || {}).name
+                                 :                       targetRoom.name,
+                            body : messages.type == "text" ? messages.value
+                                 :                           "新着メッセージ"
+                        })
+
+                    this.setState({
+                        user: {
+                            ...user,
+                            ...{
+                                rooms: this.state.user.rooms.map(x => {
+                                    if (x.id == room.id)
+                                        x.messages = messages
+            
+                                    return x
+                                })
+                            }
+                        }
                     })
-
-                    this.state.user.rooms = this.state.user.rooms.map(x => {
-                        if (x.id == room.id)
-                            x.messages = messages
-
-                        return x
-                    })
-
-                    this.forceUpdate()
                 }
             }))
 
             this.setState({
                 user,
-                unsubscribers
+                unsubscribers: roomUnsubscribers.concat(userUnsubscriber)
             })
             
         })()

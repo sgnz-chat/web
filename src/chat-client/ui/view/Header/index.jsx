@@ -43,8 +43,12 @@ export default class extends React.Component {
                 }
                 <div className={classNames.Title}>sgnz-chat</div>
                 <Button
+                    color="White"
+                    className={classNames.Button}
                     onClick={onSignOutButtonClcik}
-                >ログアウト</Button>
+                >
+                    ログアウト
+                </Button>
             </header>
         )
     }
