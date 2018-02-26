@@ -200,7 +200,7 @@ export default class extends React.Component {
             
             const rtcApiCloseUnsubscribe = rtcApi.subscribeClose(() => {
                 this.setState({
-                    call: {
+                    callState: {
                         isReceiving: false,
                         isTalking  : false
                     }
@@ -286,11 +286,9 @@ export default class extends React.Component {
                     className={classNames.Header}
                     onSignOutButtonClcik={async _ => {
                         await tokenApi.delete()
-                        console.log('delete')
 
-                        // TODO fix
+                        // // TODO fix
                         window.location.reload()
-                        history.push("/sign_in")
                     }}
                     onNavButtonClick={_ => 
                         this.setState({subNavigationIsView: !this.state.subNavigationIsView})

@@ -68,7 +68,9 @@ export default class extends React.Component {
                     <div
                         className={classNames.Result}
                     >
-                        {this.state.targetUser ? <div
+                        {this.state.targetUser 
+                      && this.state.targetUser.id != user.id
+                      && !user.friends.map(x => x.id).includes(this.state.targetUser.id) ? <div
                                 className={classNames.TargetUser}
                             >
                                 <Avatar
@@ -138,7 +140,7 @@ export default class extends React.Component {
                                 </div>
                             </div>
                     : this.state.isResultView  ? <div>
-                                該当するUserがいません。IDを確認してください
+                                該当するUserが存在しないか検索を許可していません。
                             </div>
                     :                            undefined
                         }

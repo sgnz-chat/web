@@ -13,10 +13,12 @@ export default class extends React.Component {
     }
 
     componentDidMount() {
+        const e = ReactDOM.findDOMNode(this)
+        e.scrollTop = e.scrollHeight
     }
 
-    componentWillReceiveProps(props) {
-
+    componentDidUpdate(props) {
+        console.log("componentWillReceiveProps")
         const e = ReactDOM.findDOMNode(this)
         e.scrollTop = e.scrollHeight
     }

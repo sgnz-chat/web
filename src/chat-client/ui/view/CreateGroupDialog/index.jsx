@@ -116,6 +116,7 @@ export default class extends React.Component {
                             name="name"
                             labelText="グループ名"
                             required
+                            maxLength={"8"}
                         />
                     </div>
                     <List

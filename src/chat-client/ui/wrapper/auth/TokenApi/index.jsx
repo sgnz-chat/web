@@ -32,6 +32,9 @@ export default class extends React.Component {
                     for (let f of this.state.subscribers)
                         f(this.state.token)
                 } else {
+                    this.setState({
+                        token: undefined
+                    })
                 }
             });
 
