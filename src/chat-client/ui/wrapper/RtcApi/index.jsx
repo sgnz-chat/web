@@ -50,46 +50,53 @@ export default class extends React.Component {
 
                 this.setState({peer})
 
-                peer.on('open', () => {
+                peer.on("open", () => {
                     this.setState({isready: true})
                     for (let f of this.state.openSubscribes)
                         f()
                 })
 
-                peer.on('close', () => {
+                peer.on("close", () => {
                     this.setState({isready: false})
                     for (let f of this.state.closeSubscribes)
                         f()
                 })
 
-                peer.on('call', async call => {
-                    console.log(call)
+
+
+                peer.on("call", async call => {
 
                     const stream = await navigator.mediaDevices.getUserMedia({
                         video: call.type == "video" ? true : false,
                         audio: true
                     })
 
+
                     if (!stream)
                         onError("権限が許可されていません")
                     
                     for (let f of this.state.receiveSubscribes)
                         f({
-                            answer      : () => {
+                            answer      : x => {
                                 this.setState({call})
-                                call.answer(stream)
+                                call.answer(x)
                             },
-                            close      : call.close(),
+                            close      : () => call.close(),
                             stream,
+                            getPartnerStream: () => new Promise(resolve => {
+                                call.on("stream", stream => {
+                                    resolve (stream)
+                                });
+                            }),
                             sourceUserId: call.metadata.sourceUserId,
                             type        : call.metadata.type
                         })
                         
                 });
 
-                peer.on('disconnected', () => undefined)
+                peer.on("disconnected", () => undefined)
 
-                peer.on('error', e => onError(e.message));
+                peer.on("error", e => onError(e.message));
 
             } catch (e) {
                 onError(e)
@@ -112,7 +119,7 @@ export default class extends React.Component {
                     video: type == "video" ? true : false,
                     audio: true
                 }),
-                call: (userId, stream) => {
+                call: async (userId, stream) => {
 
                     const sourceUserId = tokenApi.read().user.uid
                     
@@ -132,6 +139,17 @@ export default class extends React.Component {
                                     }
                                 }
                             )
+                        })
+                        return ({
+                            close      : () => call.close(),
+                            stream,
+                            getPartnerStream: () => new Promise(resolve => {
+                                call.on("stream", stream => {
+                                    resolve (stream)
+                                });
+                            }),
+                            sourceUserId: call.metadata.sourceUserId,
+                            type        : call.metadata.type
                         })
                     } else {
                         onError("rtcApi call error")

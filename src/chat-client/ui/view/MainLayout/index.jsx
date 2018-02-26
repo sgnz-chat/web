@@ -167,9 +167,10 @@ export default class extends React.Component {
                     close,
                     sourceUserId,
                     stream,
+                    getPartnerStream,
                     type
                 }) => {
-                    
+
                     const sourceUser = await userApi.read({
                         user: {
                             id: sourceUserId
@@ -185,15 +186,17 @@ export default class extends React.Component {
                             sourceUser,
                             type,
                             close,
-                            answer: () => {
-                                audioElement.srcObject = stream;
+                            answer: async () => {
+                                answer(stream)
+                                
+                                audioElement.srcObject = await getPartnerStream()
                                 audioElement.play()
-                                answer()
                             },
                         }
                     })
                 }
             )
+            
             
             const rtcApiCloseUnsubscribe = rtcApi.subscribeClose(() => {
                 this.setState({
@@ -313,7 +316,11 @@ export default class extends React.Component {
                                 telephoneCall: async userId => {
                                     const stream = await rtcApi.createStream("voice");
                                     
-                                    rtcApi.call(userId, stream)
+                                    const x = await rtcApi.call(userId, stream)
+
+                                    const audioElement = ReactDOM.findDOMNode(this).children[0]
+                                    audioElement.srcObject = await x.getPartnerStream()
+                                    audioElement.play()
                                 },
                                 history,
                                 location,
