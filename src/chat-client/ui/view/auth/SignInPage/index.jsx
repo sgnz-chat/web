@@ -1,10 +1,11 @@
 import React     from "react"
+import config    from "api-common/config"
 
 import classNames from "chat-client/ui/view/auth/SignInPage/classNames"
 
 
 const uiConfig = {
-    signInSuccessUrl: "http://localhost:3000/",
+    signInSuccessUrl: config.HOSTING_DOMAIN.url,
     signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,

@@ -4,7 +4,7 @@
   "scripts": {
     "postinstall": "npm run postinstall:production",
     "postinstall:development": "webpack -d",
-    "postinstall:production": "webpack -p",
+    "postinstall:production": "HOSTING_DOMAIN=http://localhost:3000 webpack -p",
     "start": "browser-sync start --config bs-config.js"
   },
   "license": "ISC",

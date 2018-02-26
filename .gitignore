@@ -1,5 +1,6 @@
 # Original
 build/
+dist/
 .*.swp
 package-lock.json
 
@@ -72,4 +73,9 @@ typings/
 # dotenv environment variables file
 .env
 
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
 
+# End of https://www.gitignore.io/api/firebase
