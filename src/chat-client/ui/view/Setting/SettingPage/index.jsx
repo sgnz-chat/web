@@ -32,8 +32,8 @@ export default ({
                 const room = await update({
                     user: {
                         ...user,
-                        displayName: form.elements["displayName"].value,
-                        name       : form.elements["statusMessage"].value,
+                        displayName  : form.elements["displayName"].value,
+                        statusMessage: form.elements["statusMessage"].value,
                     }
                 })
 
@@ -43,7 +43,7 @@ export default ({
                 labelText="表示名"
                 name="displayName"
                 required
-                defaultValue={user.name}
+                defaultValue={user.displayName}
                 minLength={"1"}
                 maxLength={"8"}
             />
