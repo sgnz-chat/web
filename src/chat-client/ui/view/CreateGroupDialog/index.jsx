@@ -22,6 +22,12 @@ export default class extends React.Component {
         })
     }
 
+    componentDidMount() {
+        this.setState({
+            newGroupUserIds: this.state.newGroupUserIds.concat(this.props.user.id)
+        })
+    }
+
     render() {
 
         const {
@@ -72,12 +78,30 @@ export default class extends React.Component {
                             }
                         )
 
-                        await createRoom({
+                        const room = await createRoom({
                             room: {
                                 name : form.elements["name"].value,
-                                users: this.state.newGroupUserIds
+                                users: this.state.newGroupUserIds.map(x => ({id: x})),
+                                type : "group"
                             }
                         })
+
+                        for (let userId of this.state.newGroupUserIds) {
+                            const friend = await readUser({
+                                user: {
+                                    id: userId
+                                }
+                            })
+
+                            await updateUser({
+                                user: {
+                                    id   : userId,
+                                    rooms: friend.rooms.concat({
+                                        id: room.id
+                                    })
+                                }
+                            })
+                        }
 
                         this.setState({
                             isProcessing: false

@@ -34,9 +34,12 @@ export default class extends React.Component {
         const {
             databaseApi,
             location,
+            rtcApi,
+            telephoneCall,
             subNavigationIsView,
             subNavigationType,
             user,
+            rooms,
             ...props
         } = this.props
 
@@ -56,12 +59,15 @@ export default class extends React.Component {
                         databaseApi={databaseApi}
                         roomId={this.state.roomId}
                         user={user}
+                        rooms={rooms}
                     />
                 </SubNavigation>
                 <RoomManager
                     databaseApi={databaseApi}
                     roomId={this.state.roomId}
+                    telephoneCall={telephoneCall}
                     user={user}
+                    rooms={rooms}
                 />
             </div>
         )

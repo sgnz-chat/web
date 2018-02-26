@@ -29,10 +29,11 @@ export default class extends React.Component {
             roomId = undefined,
             roomMessageApi,
             user,
+            rooms,
             ...props
         } = this.props
 
-        const messages = (user.rooms.find(x => x.id == roomId) || {}).messages || []
+        const messages = (rooms.find(x => x.id == roomId) || {}).messages || []
 
         return (
             <div

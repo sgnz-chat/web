@@ -1,16 +1,16 @@
 .Host {
-    background-color: #f0f1f5;
+    background-color: #fff;
     display         : flex;
     flex-direction  : column;
     height          : 100vh;
     width           : 100vw;
 }
 
-.Host > :first-child {
+.Header {
     z-index: 2;
 }
 
-.Host > :nth-child(2) {
+.Content {
     display: flex;
     height : 100%;
 }
@@ -22,7 +22,7 @@
 }
 
 @media (max-width : 767px) {
-    .Host > :nth-child(2) {
+    .Host > .Content {
         flex-direction: column-reverse;
     }
     .Main {

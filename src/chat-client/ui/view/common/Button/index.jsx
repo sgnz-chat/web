@@ -6,6 +6,7 @@ export default ({
     className,
     color = "Blue",
     component = "span",
+    onClick = e => undefined,
     Component = component,
     dense,
     disabled,
@@ -27,5 +28,6 @@ export default ({
               classNames[color]
             ].join(" ")
         }
+        onClick={e => !disabled && onClick(e)}
         {...props}
     />

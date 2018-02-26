@@ -1,0 +1,11 @@
+.Host {
+    color     : #555;
+    cursor    : pointer;
+    font-size : 1.5rem;
+    padding   : .5rem;
+    transition: all .3s ease;
+}
+
+.Host:hover {
+    color: #000;
+}

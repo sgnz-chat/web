@@ -23,6 +23,7 @@ export default class extends React.Component {
 
     render() {
         const {
+            className,
             onSignOutButtonClcik = e => undefined,
             onNavButtonClick = e => undefined,
             user,
@@ -31,7 +32,7 @@ export default class extends React.Component {
 
         return (
             <header
-                className={classNames.Host}
+                className={[className, classNames.Host].join(" ")}
             >
                 {window.innerWidth < 767 
              && <FontAwesome 

@@ -3,6 +3,8 @@ import ReactDOM             from "react-dom"
 import { Redirect }         from "react-router"
 import Header               from "chat-client/ui/view/Header"
 import NavigationBar        from "chat-client/ui/view/navigation/NavigationBar"
+import TelephoneDialog      from "chat-client/ui/view/TelephoneDialog"
+import setState             from "chat-client/util/setState"
 
 import classNames from "chat-client/ui/view/MainLayout/classNames"
 
@@ -29,14 +31,21 @@ const executeNotification = ({
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
+            callState          : {
+                isReceiving: false,
+                isTalking  : false
+            },
+            isFirstSubscribe   : true,
             subNavigationIsView: true,
-            subNavigationType  : "friend"
+            subNavigationType  : "friend",
+            user               : undefined,
+            unsubscribers      : [],
+            rooms              : []
         })
     }
 
     componentDidMount() {
         ;(async _ => {
-
 
             if (window.Notification && Notification.permission === "default")
                 Notification.requestPermission(r => {
@@ -64,7 +73,8 @@ export default class extends React.Component {
                 databaseApi: {
                     userApi,
                     roomMessageApi
-                }
+                },
+                rtcApi
             } = this.props
 
             let user = await userApi.read()
@@ -85,60 +95,122 @@ export default class extends React.Component {
                 
                 user = await userApi.read()
             }
+            await setState(
+                this,
+                {user}
+            )
+            // user room subscriber 
 
-            const roomMessageSubscriber = roomId => {}
+            const roomMessageSubscriber = (room, messages) => {
+
+                const targetRoom = (this.state.rooms.find(x => x.id == room.id) || {})
+
+                const prevMessages = targetRoom.messages || []
+
+                const newMessages = messages.filter(x => !prevMessages.map(y => y.id).includes(x.id))
+
+                if (newMessages)
+                    for (const message of newMessages)
+                        if (message.senderId != user.id && window.Notification && !this.state.isFirstSubscribe)
+                            executeNotification({
+                                title: room.type == "pair" ? (user.friends.find(x => room.id == x.roomId) || {}).name
+                                     :                       targetRoom.name,
+                                body : message.type == "text" ? message.value
+                                     :                          "新着メッセージ"
+                            })
+                
+                this.state.isFirstSubscribe && this.setState({
+                    isFirstSubscribe: false
+                })
+
+                this.setState({
+                    rooms: this.state.user.rooms.map(x => {
+                        if (x.id == room.id)
+                            x.messages = messages
+
+                        return x
+                    })
+                })
+            }
 
             const userUnsubscriber = userApi.subscribe({
                 subscriber: user => {
-                    const newRoom =  user.rooms.filter(room => !this.state.user.rooms.map(x => x.id).includes(room.id))
+                    const newRooms =  user.rooms.filter(room => !this.state.rooms.map(x => x.id).includes(room.id))
 
-                    if (newRoom) {
-                        newRoom
+                    if (newRooms) {
+                        this.setState({
+                            unsubscribers: this.state.unsubscribers.concat(
+                                newRooms.map(x => 
+                                    roomMessageApi.subscribe({
+                                        room: {
+                                            id: x.id
+                                        },
+                                        subscriber: next => roomMessageSubscriber(x, next)
+                                    }))
+                            )
+                        })
                     }
 
                     this.setState({user})
                 }
             })
-            
-            const roomUnsubscribers = user.rooms.map(room => roomMessageApi.subscribe({
-                room: {
-                    id: room.id
-                },
-                subscriber: messages => {
 
-                    const targetRoom = (this.state.user.rooms.find(x => x.id == room.id) || {})
+            this.setState({
+                unsubscribers: this.state.unsubscribers.concat(userUnsubscriber)
+            })
 
-                    const prevMessages = targetRoom.messages || []
+            // rtcApi subscriber
 
-                    if (prevMessages.length < messages.length)
-                        window.Notification && executeNotification({
-                            title: room.type == "pair" ? (user.friends.find(x => room.id == x.roomId) || {}).name
-                                 :                       targetRoom.name,
-                            body : messages.type == "text" ? messages.value
-                                 :                           "新着メッセージ"
-                        })
+            const rtcApiReceiveUnsubscribe = rtcApi.subscribeReceive(
+                async ({
+                    answer,
+                    close,
+                    sourceUserId,
+                    stream,
+                    type
+                }) => {
+                    
+                    const sourceUser = await userApi.read({
+                        user: {
+                            id: sourceUserId
+                        }
+                    })
+
+                    const audioElement = ReactDOM.findDOMNode(this).children[0]
 
                     this.setState({
-                        user: {
-                            ...user,
-                            ...{
-                                rooms: this.state.user.rooms.map(x => {
-                                    if (x.id == room.id)
-                                        x.messages = messages
-            
-                                    return x
-                                })
-                            }
+                        callState: {
+                            isReceiving: true,
+                            isTalking  : false,
+                            sourceUser,
+                            type,
+                            close,
+                            answer: () => {
+                                audioElement.srcObject = stream;
+                                audioElement.play()
+                                answer()
+                            },
                         }
                     })
                 }
-            }))
+            )
+            
+            const rtcApiCloseUnsubscribe = rtcApi.subscribeClose(() => {
+                this.setState({
+                    call: {
+                        isReceiving: false,
+                        isTalking  : false
+                    }
+                })
+
+                const audioElement = ReactDOM.findDOMNode(this).children[0]
+                audioElement.srcObject = null;
+            })
 
             this.setState({
-                user,
-                unsubscribers: roomUnsubscribers.concat(userUnsubscriber)
+                unsubscribers: this.state.unsubscribers.concat([rtcApiReceiveUnsubscribe, rtcApiCloseUnsubscribe])
             })
-            
+
         })()
     }
 
@@ -154,6 +226,7 @@ export default class extends React.Component {
             location,
             onError,
             tokenApi,
+            rtcApi,
             ...props
         } = this.props
 
@@ -202,7 +275,12 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
+                <audio  
+                    autoPlay
+                    playsInline
+                />
                 <Header
+                    className={classNames.Header}
                     onSignOutButtonClcik={async _ => {
                         await tokenApi.delete()
                         console.log('delete')
@@ -215,7 +293,9 @@ export default class extends React.Component {
                         this.setState({subNavigationIsView: !this.state.subNavigationIsView})
                     }
                 />
-                <div>
+                <div
+                    className={classNames.Content}
+                >
                     <NavigationBar
                         history={history}
                         location={location}
@@ -230,18 +310,50 @@ export default class extends React.Component {
                         {this.state.user && React.cloneElement(
                             children,
                             {
+                                telephoneCall: async userId => {
+                                    const stream = await rtcApi.createStream("voice");
+                                    
+                                    rtcApi.call(userId, stream)
+                                },
                                 history,
                                 location,
+                                rtcApi,
                                 subNavigationIsView: this.state.subNavigationIsView,
                                 subNavigationType: this.state.subNavigationType,
                                 tokenApi,
                                 user: this.state.user,
+                                rooms: this.state.rooms,
                                 ...props,
                                 ...children.props
                             }
                         )}
                     </main>}
                 </div>
+                <TelephoneDialog
+                    isTalking={this.state.callState.isTalking}
+                    isVisible={this.state.callState.isReceiving}
+                    user={this.state.callState.sourceUser}
+                    onAnswerButtonClick={_ => {
+                        this.state.callState.answer()
+                        this.setState({
+                            callState: {
+                                ...this.state.callState,
+                                isTalking: true
+                            }
+                        })
+                        
+                    }}
+                    onCloseButtonClick={_ => {
+                        this.state.callState.close()
+                        this.setState({
+                            callState: {
+                                isReceiving: false,
+                                isTalking  : false
+                            }
+                        })
+                    }}
+                    onRejectButtonClick={_ => this.state.callState.close()}
+                />
             </div>
         )
     }

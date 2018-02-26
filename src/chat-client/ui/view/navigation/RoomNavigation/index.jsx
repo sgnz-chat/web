@@ -7,6 +7,7 @@ import classNames from "chat-client/ui/view/navigation/RoomNavigation/classNames
 
 export default ({
     user,
+    rooms,
     roomId,
     className,
     ...props
@@ -14,7 +15,7 @@ export default ({
 
     return (
         <List>
-            {user.rooms && user.rooms.map(room => {
+            {rooms && rooms.map(room => {
                 const friend = room.type == "pair" && user.friends.find(x => room.id == x.roomId)
 
                 return (

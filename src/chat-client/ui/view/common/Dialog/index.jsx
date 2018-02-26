@@ -1,5 +1,4 @@
 import React    from "react"
-import ReactDOM from "react-dom"
 import Root     from "chat-client/ui/control/Root"
 
 import classNames from "chat-client/ui/view/common/Dialog/classNames"

@@ -1,5 +1,4 @@
 import React    from "react"
-import ReactDOM from "react-dom"
 
 import classNames from "chat-client/ui/view/common/Image/classNames"
 

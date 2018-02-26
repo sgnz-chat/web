@@ -9,7 +9,6 @@ import TextField        from "chat-client/ui/view/common/TextField"
 
 import classNames from "chat-client/ui/view/SearchUserDialog/classNames"
 
-
 export default class extends React.Component {
     componentWillMount() {
         this.setState({
@@ -25,6 +24,7 @@ export default class extends React.Component {
                 create: createRoom
             },
             user,
+            rooms,
             userApi: {
                 read: readUser,
                 update: updateUser
@@ -111,7 +111,7 @@ export default class extends React.Component {
                                                         id    : this.state.targetUser.id,
                                                         roomId: room.id
                                                     }),
-                                                    rooms  : user.rooms.concat({
+                                                    rooms  : rooms.concat({
                                                         id: room.id
                                                     })
                                                 }

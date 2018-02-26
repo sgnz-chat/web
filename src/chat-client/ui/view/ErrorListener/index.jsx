@@ -1,4 +1,6 @@
 import React    from "react"
+import Snackbar from "chat-client/ui/view/common/Snackbar"
+import Error    from "chat-client/ui/view/Error"
 
 import classNames from "chat-client/ui/view/ErrorListener/classNames"
 
@@ -31,9 +33,25 @@ export default class extends React.Component {
                                     key  : Date.now()
                                 })
                             },
-                            () => console.log('error catch')
+                            () => console.error(e)
                         )
                     }
+                )}
+                {this.state.errors.map(x =>
+                    <Snackbar
+                        key={x.key}
+                        duration={3000}
+                        onHidden={_ =>
+                            this.setState({
+                                errors: this.state.errors.filter(y => y != x)
+                            })
+                        }
+                        className={classNames.Snackbar}
+                    >
+                        <Error
+                            error={x.error}
+                        />
+                    </Snackbar>
                 )}
             </Component>
         )

@@ -1,4 +1,5 @@
 import React            from "react"
+import FontAwesome      from "chat-client/ui/view/common/FontAwesome"
 import ChatPanel        from "chat-client/ui/view/room/ChatPanel"
 import MessageLog       from "chat-client/ui/view/room/MessageLog"
 
@@ -50,8 +51,10 @@ export default class extends React.Component {
                 roomMessageApi
             },
             roomId,
+            telephoneCall = userId => undefined,
             subNavigationType,
             user,
+            rooms,
             ...props
         } = this.props
 
@@ -59,16 +62,33 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                <MessageLog
-                    roomId={roomId}
-                    roomMessageApi={roomMessageApi}
-                    user={user}
-                />
-                <ChatPanel
-                    roomId={roomId}
-                    roomMessageApi={roomMessageApi}
-                    user={user}
-                />
+                {roomId ? [
+                    <MessageLog
+                        key={"MessageLog"}
+                        roomId={roomId}
+                        roomMessageApi={roomMessageApi}
+                        user={user}
+                        rooms={rooms}
+                    />,
+                    <ChatPanel
+                        key={"ChatPanel"}
+                        roomId={roomId}
+                        roomMessageApi={roomMessageApi}
+                        telephoneCall={() => {
+                            const partnerUser = user.friends.find(x => x.roomId == roomId)
+                            if (partnerUser)
+                                telephoneCall(partnerUser.id)
+                        }}
+                        user={user}
+                    />
+                ]
+              : <div
+                    className={classNames.RoomNotFound}
+                >
+                    <FontAwesome>{'\uf27a'}</FontAwesome>
+                    <div>トークを始めよう！</div>
+                </div>
+                }
             </div>
         )
     }

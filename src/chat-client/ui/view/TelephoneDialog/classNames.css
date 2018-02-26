@@ -1,0 +1,17 @@
+.UserContent {
+    align-items    : center;
+    display        : flex;
+    flex-direction : column;
+    flex-grow      : 1;
+    justify-content: center;
+}
+
+.UserContent > :first-child {
+    height: 5rem;
+    margin: 1rem;
+    width : 5rem;
+}
+
+.UserContent > :last-child > * {
+    margin: 0 .2rem;
+}

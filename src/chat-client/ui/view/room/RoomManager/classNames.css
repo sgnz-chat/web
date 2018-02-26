@@ -7,3 +7,15 @@
 .Host > :first-child {
     flex-grow: 1;
 }
+
+.RoomNotFound {
+    align-items    : center;
+    color          : #666;
+    flex-direction : column;
+    display        : flex;
+    justify-content: center;
+}
+
+.RoomNotFound > :first-child {
+    font-size: 6rem;
+}

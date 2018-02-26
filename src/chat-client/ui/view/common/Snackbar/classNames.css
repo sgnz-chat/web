@@ -1,0 +1,47 @@
+.Host {
+    display         : flex;
+    position        : fixed;
+    bottom          : 0;
+    box-sizing      : border-box;
+    box-shadow      : 1px 3px 4px 2px rgba(0,0,0,0.2);
+    min-width       : 288px;
+    width           : 100vw;
+    max-width       : 568px;
+    min-height      : 48px;
+    padding         : 0 24px;
+    background-color: #323232;
+    color           : #FFF;
+    font-size       : .875rem;
+}
+
+@keyframes show {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes hide {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+.Host.Visible {
+    animation: show .2s ease-out both;
+}
+
+.Host.Hidden {
+    animation: hide .2s ease-out both;
+}
+
+.Host > :nth-child(1) {
+    padding: 14px 0;
+}

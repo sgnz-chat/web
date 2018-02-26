@@ -4,8 +4,9 @@ import SignInPage              from "chat-client/ui/view/auth/SignInPage"
 import RoomPage                from "chat-client/ui/view/room/RoomPage"
 import SettingPage             from "chat-client/ui/view/setting/SettingPage"
 import UserPage                from "chat-client/ui/view/user/UserPage"
-import DatabaseApi             from "chat-client/ui/wrapper/DatabaseApi"
 import TokenApi                from "chat-client/ui/wrapper/auth/TokenApi"
+import DatabaseApi             from "chat-client/ui/wrapper/DatabaseApi"
+import RtcApi                  from "chat-client/ui/wrapper/RtcApi"
 import React                   from "react"
 import { Route }               from "react-router"
 import { Switch }              from "react-router"
@@ -18,9 +19,14 @@ let Root = withRouter(
             render={props =>
                 <DatabaseApi
                     render={props =>
-                        <MainLayout
-                            {...props}
-                        />
+                        <RtcApi
+                            render={props =>
+                                <MainLayout
+                                    {...props}
+                                />
+                        }
+                        {...props}
+                    />
                     }
                     {...props}
                 />

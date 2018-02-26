@@ -1,3 +1,13 @@
 .Host {
-    border-top: 1px solid #bbb;
+    border-top    : 1px solid #bbb;
+    display       : flex;
+    flex-direction: column;
+}
+
+.Host > :first-child {
+
+}
+
+.Host > :last-child {
+    padding       : 0 1rem;
 }

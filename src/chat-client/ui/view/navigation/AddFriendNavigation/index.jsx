@@ -42,6 +42,7 @@ export default class extends React.Component {
                 }
             },
             user,
+            rooms,
             ...props
         } = this.props
 
@@ -69,6 +70,7 @@ export default class extends React.Component {
                 </List>
                 <SearchUserDialog
                     user={user}
+                    rooms={rooms}
                     roomApi={this.props.databaseApi.roomApi}
                     userApi={this.props.databaseApi.userApi}
                     onCancel={() => this.setState({searchFriendDialogIsView: false})}
