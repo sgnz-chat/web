@@ -289,7 +289,7 @@ export default class extends React.Component {
                         console.log('delete')
 
                         // TODO fix
-                        location.reload()
+                        window.location.reload()
                         history.push("/sign_in")
                     }}
                     onNavButtonClick={_ => 

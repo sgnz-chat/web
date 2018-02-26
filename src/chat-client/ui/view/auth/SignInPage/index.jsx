@@ -5,7 +5,7 @@ import classNames from "chat-client/ui/view/auth/SignInPage/classNames"
 
 
 const uiConfig = {
-    signInSuccessUrl: config.HOSTING_DOMAIN.url,
+    signInSuccessUrl: config.sgnzChat.hostingDomain.url,
     signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
