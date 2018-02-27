@@ -36,7 +36,8 @@ export default class extends React.Component {
         this.setState({
             callState          : {
                 isReceiving: false,
-                isTalking  : false
+                isTalking  : false,
+                isCalling  : false
             },
             isFirstSubscribe   : true,
             subNavigationIsView: true,
@@ -165,63 +166,28 @@ export default class extends React.Component {
             // rtcApi subscriber
 
             const rtcApiReceiveUnsubscribe = rtcApi.subscribeReceive(
-                async ({
-                    answer,
-                    close,
-                    sourceUserId,
-                    stream,
-                    getPartnerStream,
-                    type
-                }) => {
+                async call => {
 
                     const sourceUser = await userApi.read({
                         user: {
-                            id: sourceUserId
+                            id: call.metadata.sourceUserId
                         }
                     })
 
-                    const audioElement = ReactDOM.findDOMNode(this).children[0]
-
                     this.setState({
                         callState: {
+                            sourceUser,
                             isReceiving: true,
                             isTalking  : false,
-                            sourceUser,
-                            type,
-                            close,
-                            answer: async () => {
-                                answer()
-                                
-                                audioElement.srcObject = await getPartnerStream()
-                                audioElement.play()
-                                this.setState({
-                                    callState: {
-                                        ...this.state.callState,
-                                        isReceiving: false,
-                                        isTalking  : true,
-                                    }
-                                })
-                            },
+                            call
                         }
                     })
                 }
             )
             
-            
-            const rtcApiCloseUnsubscribe = rtcApi.subscribeClose(() => {
-                this.setState({
-                    callState: {
-                        isReceiving: false,
-                        isTalking  : false
-                    }
-                })
-
-                const audioElement = ReactDOM.findDOMNode(this).children[0]
-                audioElement.srcObject = null;
-            })
 
             this.setState({
-                unsubscribers: this.state.unsubscribers.concat([rtcApiReceiveUnsubscribe, rtcApiCloseUnsubscribe])
+                unsubscribers: this.state.unsubscribers.concat([rtcApiReceiveUnsubscribe])
             })
 
         })()
@@ -243,6 +209,8 @@ export default class extends React.Component {
             rtcApi,
             ...props
         } = this.props
+
+        console.log(this.state.callState)
 
         const token = tokenApi.read();
 
@@ -333,32 +301,39 @@ export default class extends React.Component {
 
                                     const stream = await rtcApi.createStream("voice");
                                     
-                                    const {
-                                        close,
-                                        getPartnerStream,
-                                    } = await rtcApi.call(userId, stream, "voice")
+                                    const call = await rtcApi.call(userId, stream, "voice");
 
                                     this.setState({
                                         callState: {
-                                            close,
                                             sourceUser,
-                                            isCalling: true
+                                            call,
+                                            isCalling  : true,
+                                            isReceiving: false,
+                                            isTalking  : false
                                         }
                                     })
 
                                     const audioElement = ReactDOM.findDOMNode(this).children[0]
-                                    audioElement.srcObject = await getPartnerStream()
-                                    audioElement.play()
 
+                                    const partnerStream = await new Promise(resolve => {
+                                        this.state.callState.call.on("stream", x => 
+                                            resolve (x)
+                                        )
+                                    })
+
+                                    audioElement.srcObject = partnerStream
+                                    audioElement.play()
 
                                     this.setState({
                                         callState: {
-                                            isReceiving: false,
-                                            isTalking  : true,
                                             sourceUser,
-                                            close,
+                                            call,
+                                            isCalling  : false,
+                                            isReceiving: false,
+                                            isTalking  : true
                                         }
                                     })
+
                                 },
                                 changeSubNavigationView: bool => this.setState({subNavigationIsView: bool}),
                                 databaseApi,
@@ -381,21 +356,55 @@ export default class extends React.Component {
                     isTalking={this.state.callState.isTalking}
                     isVisible={this.state.callState.isReceiving || this.state.callState.isTalking || this.state.callState.isCalling}
                     user={this.state.callState.sourceUser}
-                    onAnswerButtonClick={_ => {
-                        this.state.callState.answer()
+                    onAnswerButtonClick={async _ => {
+
+                        const stream = await rtcApi.createStream("voice");
+
+                        this.state.callState.call.answer(stream)
+                        const partnerStream = await new Promise(resolve => 
+                            this.state.callState.call.on("stream", x => {
+                                resolve (x)
+                            })
+                        )
+
+                        const audioElement = ReactDOM.findDOMNode(this).children[0]
+
+                        audioElement.srcObject = partnerStream
+                        audioElement.play()
+
                         this.setState({
                             callState: {
-                                ...this.state.callState,
-                                isTalking: true
+                                sourceUser : this.state.callState.sourceUser,
+                                call       : this.state.callState.call,
+                                isReceiving: false,
+                                isTalking  : true,
+                                isCalling  : false
                             }
                         })
+                        
+                        this.state.callState.call.on("close", () => {
+                            audioElement.srcObject = null
+                            this.setState({
+                                callState: {
+                                    sourceUser : undefined,
+                                    call       : undefined,
+                                    isReceiving: false,
+                                    isTalking  : false,
+                                    isCalling  : false
+                                }
+                            })
+                        })
+                        
                     }}
                     onCloseButtonClick={_ => {
-                        this.state.callState.close()
+                        this.state.callState.call.close()
                         this.setState({
                             callState: {
+                                sourceUser : undefined,
+                                call       : undefined,
                                 isReceiving: false,
-                                isTalking  : false
+                                isTalking  : false,
+                                isCalling  : false
                             }
                         })
                     }}
