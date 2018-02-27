@@ -39,7 +39,12 @@ export default ({
 
             }}
         >
-            <div>{user.id}</div>
+            <div
+                className={classNames.IdContent}
+            >
+                <div>ID : </div>
+                <div>{user.id}</div>
+            </div>
             <TextField
                 labelText="表示名"
                 name="displayName"

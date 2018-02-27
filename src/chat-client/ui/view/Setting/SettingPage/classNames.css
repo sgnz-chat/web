@@ -15,6 +15,18 @@
     float: right;
 }
 
+.IdContent {
+    display: flex;
+}
+
+.IdContent > :first-child {
+    color       : #666;
+    margin-right: 1rem;
+    white-space:  nowrap;
+}
+
 @media (max-width: 767px) {
-    flex-direction: column;
+    .Host {
+        flex-direction: column;
+    }
 }
