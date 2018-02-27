@@ -1,0 +1,13 @@
+.ImageInput {
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+}
+
+.DialogFooter {
+    display: flex;
+}
+
+.DialogFooter > * {
+    margin: 0 .2rem;
+}

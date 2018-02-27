@@ -1,69 +1,111 @@
-import React     from "react"
-import Avatar    from "chat-client/ui/view/common/Avatar"
-import Button    from "chat-client/ui/view/common/Button"
-import TextField from "chat-client/ui/view/common/TextField"
+import React           from "react"
+import Avatar          from "chat-client/ui/view/common/Avatar"
+import Button          from "chat-client/ui/view/common/Button"
+import TextField       from "chat-client/ui/view/common/TextField"
+import SendImageDialog from "chat-client/ui/view/common/SendImageDialog"
 
 import classNames from "chat-client/ui/view/setting/SettingPage/classNames"
 
-export default ({
-    databaseApi: {
-        userApi: {
-            update
-        }
-    },
-    user,
-    ...props
-}) => 
-    <div
-        className={classNames.Host}
-    >
-        <Avatar
-            className={classNames.Avatar}
-            src={user.avatarUrl}
-        />
+export default class extends React.Component {
 
-        <form
-            onSubmit={async e => {
-                e.preventDefault()
+    componentWillMount() {
+        this.setState({
+            dialogIsVisible: false
+        })
+    }
 
-                const form = e.target
+    render() {
+        const {
+            databaseApi: {
+                userApi: {
+                    update: updateUser
+                },
+                userImageApi: {
+                    create: createUserImage
+                }
+            },
+            user,
+            ...props
+        } = this.props
 
-
-                const room = await update({
-                    user: {
-                        ...user,
-                        displayName  : form.elements["displayName"].value,
-                        statusMessage: form.elements["statusMessage"].value,
-                    }
-                })
-
-            }}
-        >
+        return (
             <div
-                className={classNames.IdContent}
+                className={classNames.Host}
             >
-                <div>ID : </div>
-                <div>{user.id}</div>
+                <div>
+                    <Avatar
+                        className={classNames.Avatar}
+                        src={user.avatarUrl}
+                    />
+                    <Button
+                        className={classNames.Button}
+                        onClick={_ => this.setState({dialogIsVisible: true})}
+                    >
+                        画像を変更
+                    </Button>
+                </div>
+                <form
+                    onSubmit={async e => {
+                        e.preventDefault()
+
+                        const form = e.target
+
+
+                        const room = await updateUser({
+                            user: {
+                                ...user,
+                                displayName  : form.elements["displayName"].value,
+                                statusMessage: form.elements["statusMessage"].value,
+                            }
+                        })
+
+                    }}
+                >
+                    <div
+                        className={classNames.IdContent}
+                    >
+                        <div>ID : </div>
+                        <div>{user.id}</div>
+                    </div>
+                    <TextField
+                        labelText="表示名"
+                        name="displayName"
+                        required
+                        defaultValue={user.displayName}
+                        minLength={"1"}
+                        maxLength={"8"}
+                    />
+                    <TextField
+                        labelText="ステータスメッセージ"
+                        name="statusMessage"
+                        defaultValue={user.statusMessage}
+                        maxLength={"18"}
+                    />
+                    <Button
+                        className={classNames.FormButton}
+                        component="button"
+                    >
+                        保存
+                    </Button>
+                </form>
+                <SendImageDialog
+                    isVisible={this.state.dialogIsVisible}
+                    title="画像アップロード"
+                    onCancel={_ => this.setState({dialogIsVisible: false})}
+                    onSubmit={async e => {
+                        e.preventDefault()
+                        let form  = e.target
+                        let image = form.elements["image"].files[0]
+                        console.log(image, "!?!??!")
+                        await createUserImage({image})
+
+                        this.setState({
+                            dialogIsVisible: false
+                        })
+                    }}
+                    name="image"
+                />
             </div>
-            <TextField
-                labelText="表示名"
-                name="displayName"
-                required
-                defaultValue={user.displayName}
-                minLength={"1"}
-                maxLength={"8"}
-            />
-            <TextField
-                labelText="ステータスメッセージ"
-                name="statusMessage"
-                defaultValue={user.statusMessage}
-                maxLength={"18"}
-            />
-            <Button
-                className={classNames.Button}
-                component="button"
-            >
-                保存
-            </Button>
-        </form>
-    </div>
+        )
+    }
+}

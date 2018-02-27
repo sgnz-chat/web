@@ -5,13 +5,19 @@
     justify-content: center;
 }
 
+.Host > :first-child {
+    align-items   : center;
+    display       : flex;
+    flex-direction: column;
+}
+
 .Avatar {
     height: 8rem;
     margin: 2rem;
     width : 8rem;
 }
 
-.Button {
+.FormButton {
     float: right;
 }
 
@@ -28,5 +34,9 @@
 @media (max-width: 767px) {
     .Host {
         flex-direction: column;
+    }
+
+    .Host > :first-child {
+        flex-direction: row;
     }
 }

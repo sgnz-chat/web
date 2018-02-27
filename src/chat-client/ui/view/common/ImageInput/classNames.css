@@ -1,0 +1,32 @@
+.Host {
+    margin: 16px 0 8px 0;
+}
+
+.LabelText:not(:empty) {
+    display      : inline-block;
+    margin-bottom: 8px;
+    font-size    : .75rem;
+    color        : #777;
+    transition   : all .3s ease-out;
+}
+
+.Image {
+    border: 1px solid #DDD;
+    cursor: pointer;
+}
+
+.Input {
+    display: none;
+}
+
+.Host.Invalid .LabelText {
+    color: #F40;
+}
+
+.Host.Focused .LabelText {
+    color: #2196F3;
+}
+
+.Host.Disabled .LabelText {
+    color: #DDD;
+}

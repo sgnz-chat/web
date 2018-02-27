@@ -5,6 +5,8 @@ import classNames from "chat-client/ui/view/common/Dialog/classNames"
 
 export default ({
     className,
+    component = "div",
+    Component = component,
     onCancel = () => undefined,
     onClick = e => undefined,
     isVisible,
@@ -14,7 +16,7 @@ export default ({
         className={isVisible ? classNames.Root : ""}
         onClick={onCancel}
     >
-        <div
+        <Component
             className={
                 [
                     className,

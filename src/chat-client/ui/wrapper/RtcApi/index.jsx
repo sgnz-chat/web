@@ -67,8 +67,11 @@ export default class extends React.Component {
                 peer.on("disconnected", () => console.log("webrtc disconnect"))
 
                 peer.on("error", e => {
-                    if (e.type == "peer-unavailable")
-                        onError(new Error("宛先に繋がりません"))
+                    onError(
+                        e.type == "peer-unavailable" ? new Error("宛先に繋がりません")
+                      : e.type == "unavailable-id"   ? new Error("他のデバイスでログインされています。通話の利用はできません。")
+                      :                                e
+                    )
                 });
 
             } catch (e) {

@@ -184,7 +184,6 @@ export default class extends React.Component {
                     })
                 }
             )
-            
 
             this.setState({
                 unsubscribers: this.state.unsubscribers.concat([rtcApiReceiveUnsubscribe])
@@ -209,8 +208,6 @@ export default class extends React.Component {
             rtcApi,
             ...props
         } = this.props
-
-        console.log(this.state.callState)
 
         const token = tokenApi.read();
 

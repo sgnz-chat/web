@@ -40,7 +40,7 @@ export default class extends React.Component {
                 {this.state.errors.map(x =>
                     <Snackbar
                         key={x.key}
-                        duration={3000}
+                        duration={5000}
                         onHidden={_ =>
                             this.setState({
                                 errors: this.state.errors.filter(y => y != x)
