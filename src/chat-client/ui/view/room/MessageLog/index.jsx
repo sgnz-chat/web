@@ -18,7 +18,6 @@ export default class extends React.Component {
     }
 
     componentDidUpdate(props) {
-        console.log("componentWillReceiveProps")
         const e = ReactDOM.findDOMNode(this)
         e.scrollTop = e.scrollHeight
     }
@@ -41,10 +40,11 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                {roomId ? messages.map(x => 
+                {roomId ? messages.map(x => console.log(x) || 
                     x.type == "text" ? (
                         user.id == x.senderId ? 
                             <MessageBox
+                                date={x.createdAt}
                                 key={x.id}
                                 position="right"
                             >
@@ -57,7 +57,9 @@ export default class extends React.Component {
                                 key={x.id}
                                 position="left"
                             >
-                                <MessageBox>
+                                <MessageBox
+                                    date={x.createdAt}
+                                >
                                     <MessageText>
                                         {x.value}
                                     </MessageText>
@@ -67,6 +69,7 @@ export default class extends React.Component {
                   :                     (
                         user.id == x.senderId ? 
                             <MessageBox
+                                date={x.createdAt}
                                 key={x.id}
                                 position="right"
                             >
@@ -77,7 +80,9 @@ export default class extends React.Component {
                                 key={x.id}
                                 position="left"
                             >  
-                                <MessageBox>
+                                <MessageBox
+                                    date={x.createdAt}
+                                >
                                 </MessageBox>
                             </AvatarMessage>
                     )

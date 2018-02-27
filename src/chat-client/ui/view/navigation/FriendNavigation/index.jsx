@@ -7,20 +7,28 @@ import classNames from "chat-client/ui/view/navigation/FriendNavigation/classNam
 
 export default ({
     roomId,
+    onClickItem = e => undefined,
     user,
     ...props
 }) => 
     <List>
         {user.friends.map((x, i) => 
             <ListItem
+                className={classNames.ListItem}
                 key={x.id}
+                onClick={onClickItem}
                 to={`/rooms/${x.roomId}`}
                 selected={roomId == x.roomId}
             >
                 <ListItemAvatar
                     src={x.avatarUrl}
                 />
-                {x.displayName}
+                <div>
+                    <div>{x.displayName}</div>
+                    <div
+                        title={x.statusMessage}
+                    >{x.statusMessage}</div>
+                </div>
             </ListItem>
         )}
     </List>

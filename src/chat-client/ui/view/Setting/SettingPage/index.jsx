@@ -39,6 +39,7 @@ export default ({
 
             }}
         >
+            <div>{user.id}</div>
             <TextField
                 labelText="表示名"
                 name="displayName"

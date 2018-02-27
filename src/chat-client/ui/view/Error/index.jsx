@@ -21,7 +21,7 @@ export default ({
               : error.status == 503 ? "機能メンテナンス中です(503)"
               : error.status == 504 ? "サーバーエラー(504)"
               :                       unknownError
-              : error instanceof TypeError ? unknownError
+              : error instanceof TypeError ? error.message
               :                              unknownError
         )}
     </Component>

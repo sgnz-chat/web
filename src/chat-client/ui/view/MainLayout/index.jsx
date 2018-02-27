@@ -12,6 +12,9 @@ const executeNotification = ({
     title,
     body,
 }) => {
+    if (!window.Notification)
+        return
+
     const x = new Notification(
         title,
         {
@@ -111,7 +114,7 @@ export default class extends React.Component {
 
                 if (newMessages)
                     for (const message of newMessages)
-                        if (message.senderId != user.id && window.Notification && !this.state.isFirstSubscribe)
+                        if (message.senderId != user.id && !this.state.isFirstSubscribe && document.hidden)
                             executeNotification({
                                 title: room.type == "pair" ? (user.friends.find(x => room.id == x.roomId) || {}).name
                                      :                       targetRoom.name,
@@ -187,9 +190,10 @@ export default class extends React.Component {
                             type,
                             close,
                             answer: async () => {
-                                answer(stream)
+                                answer()
                                 
                                 audioElement.srcObject = await getPartnerStream()
+                                console.log("getPartnerStream")
                                 audioElement.play()
                             },
                         }
@@ -301,7 +305,8 @@ export default class extends React.Component {
                         history={history}
                         location={location}
                         onChange={type => this.setState({
-                            subNavigationType: type
+                            subNavigationIsView: true,
+                            subNavigationType  : type
                         })}
                         selectedType={this.state.subNavigationType}
                     />
@@ -320,6 +325,7 @@ export default class extends React.Component {
                                     audioElement.srcObject = await x.getPartnerStream()
                                     audioElement.play()
                                 },
+                                changeSubNavigationView: bool => this.setState({subNavigationIsView: bool}),
                                 history,
                                 location,
                                 rtcApi,
@@ -357,7 +363,6 @@ export default class extends React.Component {
                             }
                         })
                     }}
-                    onRejectButtonClick={_ => this.state.callState.close()}
                 />
             </div>
         )

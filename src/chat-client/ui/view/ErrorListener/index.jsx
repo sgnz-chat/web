@@ -26,7 +26,7 @@ export default class extends React.Component {
                 {React.cloneElement(
                     children,
                     {
-                        onError: e => this.setState(
+                        onError: (e) => this.setState(
                             {
                                 errors: this.state.errors.concat({
                                     error: e,

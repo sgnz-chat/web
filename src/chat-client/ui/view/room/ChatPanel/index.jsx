@@ -48,11 +48,10 @@ export default ({
                                 value
                             }
                         })
-                    
+
                 }
             }}
             name="textMessage"
             labelText="メッセージを送信"
-            autoFocus={true}
         />
     </div>

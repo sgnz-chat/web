@@ -2,6 +2,10 @@ import React     from "react"
 import skyWayKey from "api-common/skyWayKey"
 import setState  from "chat-client/util/setState"
 
+const permissionError = ({
+    message = "カメラとマイクの使用を許可してください"
+}) => new Error(message)
+
 export default class extends React.Component {
 
     componentWillMount() {
@@ -37,7 +41,7 @@ export default class extends React.Component {
             try {
                 const devices = await navigator.mediaDevices.enumerateDevices()
                 if (devices.length == 0)
-                    onError("カメラとマイクの使用を許可してください")
+                    onError(permissionError())
                 
 
                 const peer = new Peer(
@@ -71,22 +75,21 @@ export default class extends React.Component {
                         audio: true
                     })
 
-
                     if (!stream)
-                        onError("権限が許可されていません")
+                        onError(permissionError())
                     
                     for (let f of this.state.receiveSubscribes)
                         f({
-                            answer      : x => {
+                            answer      : () => {
                                 this.setState({call})
-                                call.answer(x)
+                                call.answer(stream)
                             },
                             close      : () => call.close(),
                             stream,
                             getPartnerStream: () => new Promise(resolve => {
-                                call.on("stream", stream => {
-                                    resolve (stream)
-                                });
+                                call.on("stream", x => {
+                                    resolve (x)
+                                })
                             }),
                             sourceUserId: call.metadata.sourceUserId,
                             type        : call.metadata.type
@@ -128,24 +131,29 @@ export default class extends React.Component {
                         if (this.state.call)
                             this.state.call.close()
 
-                        this.setState({
-                            call: this.state.peer.call(
-                                userId,
-                                stream,
-                                {
-                                    metadata: {
-                                        type: "voice",
-                                        sourceUserId
-                                    }
+                        const call = this.state.peer.call(
+                            userId,
+                            stream,
+                            {
+                                metadata: {
+                                    type: "voice",
+                                    sourceUserId
                                 }
-                            )
-                        })
+                            }
+                        )
+
+                        await setState(
+                            this,
+                            {call}
+                        )
+                        
                         return ({
                             close      : () => call.close(),
                             stream,
                             getPartnerStream: () => new Promise(resolve => {
-                                call.on("stream", stream => {
-                                    resolve (stream)
+                                call.on("stream", x => {
+                                    resolve (x)
+                                    console.log('debug')
                                 });
                             }),
                             sourceUserId: call.metadata.sourceUserId,

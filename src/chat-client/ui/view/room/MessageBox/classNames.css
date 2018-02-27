@@ -1,3 +1,19 @@
+.Host {
+    display: flex;
+}
+
+.Host > :nth-child(2) {
+    align-self: flex-end;
+}
+
+.Host.Left {
+    flex-direction: row;
+}
+
+.Host.Right {
+    flex-direction: row-reverse;
+}
+
 .ArrowBox {
     position      : relative;
     background    : white;

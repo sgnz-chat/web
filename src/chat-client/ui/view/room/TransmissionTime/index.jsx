@@ -3,35 +3,36 @@ import React from "react"
 import classNames from "chat-client/ui/view/room/TransmissionTime/classNames"
 
 export default ({
-    timestamp,
+    date,
     className,
     ...props
-}) =>
-    <p
-        className={
-            [
-                className,
-                classNames.Host
-            ].join(" ")
-        }
-    >
-        {
-          (_ => {
-              let d     = new Date(timestamp)
-              let today = new Date()
+}) => {
+    if (!date)
+        date = new Date()
 
-              let year  = d.getYear()
-              let month = d.getMonth() + 1
-              let day   = d.getDate()
-              let hour  = d.getHours() < 10 ? '0' + d.getHours() : d.getHours()
-              let min   = d.getMinutes() < 10 ? '0' + d.getMinutes() : d.getMinutes()
+    let today = new Date()
 
-              let result = month + '/' + day + ' ' + hour + ':' + min
+    let year  = date.getYear()
+    let month = date.getMonth() + 1
+    let day   = date.getDate()
+    let hour  = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+    let min   = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
 
-              if (today.getYear() == d.getYear() && today.getMonth() == d.getMonth() && today.getDate() == d.getDate() ) 
-                  result =  hour + ':' + min
+    let result = month + '/' + day + ' ' + hour + ':' + min
 
-              return result
-          })()
-        }
-    </p>
+    if (today.getYear() == date.getYear() && today.getMonth() == date.getMonth() && today.getDate() == date.getDate() ) 
+        result =  hour + ':' + min
+
+    return (
+        <p
+            className={
+                [
+                    className,
+                    classNames.Host
+                ].join(" ")
+            }
+        >
+            {result}
+        </p>
+    )
+}

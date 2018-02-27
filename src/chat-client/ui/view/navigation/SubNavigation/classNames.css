@@ -14,10 +14,11 @@
         position        : fixed;
         padding-top     : 4rem;
         top             : 0;
+        width           : 100vw;
         z-index         : 1;
     }
 
     .Hide {
-        left: -15rem;
+        left: calc(-100vw - 1rem);
     }
 }

@@ -32,6 +32,7 @@ export default class extends React.Component {
 
     render() {
         const {
+            changeSubNavigationView,
             databaseApi,
             location,
             rtcApi,
@@ -60,6 +61,7 @@ export default class extends React.Component {
                         roomId={this.state.roomId}
                         user={user}
                         rooms={rooms}
+                        onClickItem={_ => changeSubNavigationView(false)}
                     />
                 </SubNavigation>
                 <RoomManager

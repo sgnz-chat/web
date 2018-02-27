@@ -8,6 +8,7 @@
 
 .Host > *:not(.None) {
     margin-top: .4rem;
+    min-height: max-content;
 }
 
 .None {

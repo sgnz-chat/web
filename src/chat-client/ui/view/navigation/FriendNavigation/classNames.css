@@ -1,3 +1,12 @@
-.Host {
-    
+.ListItem {
+    display: flex;
+}
+
+.ListItem > :nth-child(2) > :nth-child(2) {
+    color        : #666;
+    font-size    : .6rem;
+    overflow     : hidden;
+    text-overflow: ellipsis;
+    white-space  : nowrap;
+    width        : 9.5rem;
 }

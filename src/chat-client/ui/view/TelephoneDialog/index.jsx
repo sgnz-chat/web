@@ -15,7 +15,6 @@ export default ({
     user,
     onAnswerButtonClick = e => undefined,
     onCloseButtonClick = e => undefined,
-    onRejectButtonClick = e => undefined,
     ...props
 }) => 
     <Dialog
@@ -41,7 +40,7 @@ export default ({
                         <Button
                             color="BlueGrey"
                             key="rejectButton"
-                            onClick={onRejectButtonClick}
+                            onClick={onCloseButtonClick}
                         >
                             拒否
                         </Button>,

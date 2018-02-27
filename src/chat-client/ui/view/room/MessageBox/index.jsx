@@ -7,6 +7,7 @@ export default ({
     position = "left",
     children,
     className,
+    date,
     ...props
 }) =>
     <div
@@ -25,4 +26,7 @@ export default ({
         >
             {children}
         </div>
+        <TransmissionTime
+            date={date}
+        ></TransmissionTime>
     </div>
