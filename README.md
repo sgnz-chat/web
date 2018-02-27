@@ -21,14 +21,6 @@ $ npm install
 ```bash
 $ npm start
 ```
-## Example 
-
-```bash
-$ git clone --recursive -j8 git@github.com:sgnz-chat/web.git
-$ npm install
-$ npm start
-```
-
 ## Build
 
   Development:
@@ -50,10 +42,8 @@ $ git pull
 ```
 
 ## Deploy
-1. Copy all files from `assets` and `build` to the website's root directory.
 
 ```bash
-mv assets/* <htdocs>
-mv build/* <htdocs>
+$ sh deploy.sh
 ```
 
