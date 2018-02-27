@@ -285,7 +285,7 @@ export default class extends React.Component {
                         })}
                         selectedType={this.state.subNavigationType}
                     />
-                    {<main
+                    <main
                         className={classNames.Main}
                     >
                         {this.state.user && React.cloneElement(
@@ -349,7 +349,7 @@ export default class extends React.Component {
                                 ...children.props
                             }
                         )}
-                    </main>}
+                    </main>
                 </div>
                 <TelephoneDialog
                     isCalling={this.state.callState.isCalling}

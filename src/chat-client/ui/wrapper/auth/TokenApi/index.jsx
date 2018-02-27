@@ -123,6 +123,12 @@ export default class extends React.Component {
                         f(this.state.token)
                 },
                 read: () => this.state.token,
+                update: token => {
+                    this.setState({token})
+                    
+                    for (let f of this.state.subscribers)
+                        f(this.state.token)
+                },
                 subscribe: f => new Promise(resolve =>
                     this.setState(
                         {
