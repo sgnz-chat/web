@@ -42,10 +42,11 @@ export default class extends React.Component {
             >
                 {roomId ? messages.map(x => 
                     x.type == "text" ? (
-                        user.id == x.senderId ? 
+                        user.id == x.sender.id ? 
                             <MessageBox
                                 date={x.createdAt}
                                 key={x.id}
+                                name={x.sender.displayName}
                                 position="right"
                             >
                                 <MessageText>
@@ -53,12 +54,14 @@ export default class extends React.Component {
                                 </MessageText>
                             </MessageBox>
                       :     <AvatarMessage
-                                avatarUrl={x.senderAvatarUrl}
+                                avatarUrl={x.sender.avatarUrl}
                                 key={x.id}
+                                name={x.sender.displayName}
                                 position="left"
                             >
                                 <MessageBox
                                     date={x.createdAt}
+                                    name={x.sender.displayName}
                                 >
                                     <MessageText>
                                         {x.value}
@@ -67,7 +70,7 @@ export default class extends React.Component {
                             </AvatarMessage>
                     )
                   :                     (
-                        user.id == x.senderId ? 
+                        user.id == x.sender.id ? 
                             <MessageBox
                                 date={x.createdAt}
                                 key={x.id}
@@ -76,12 +79,14 @@ export default class extends React.Component {
                                 // TODO Image Message
                             </MessageBox>
                       :     <AvatarMessage
-                                avatarUrl={x.senderAvatarUrl}
+                                avatarUrl={x.sender.avatarUrl}
                                 key={x.id}
+                                name={x.sender.displayName}
                                 position="left"
                             >  
                                 <MessageBox
                                     date={x.createdAt}
+                                    name={x.sender.displayName}
                                 >
                                 </MessageBox>
                             </AvatarMessage>

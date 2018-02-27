@@ -115,7 +115,7 @@ export default class extends React.Component {
 
                 if (newMessages)
                     for (const message of newMessages)
-                        if (message.senderId != user.id && !this.state.isFirstSubscribe && document.hidden)
+                        if (message.sender.id != user.id && !this.state.isFirstSubscribe && document.hidden)
                             executeNotification({
                                 title: room.type == "pair" ? (user.friends.find(x => room.id == x.roomId) || {}).name
                                      :                       targetRoom.name,

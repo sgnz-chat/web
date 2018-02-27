@@ -12,3 +12,26 @@
     height : 10rem;
     padding: 0 1rem;
 }
+
+.Form {
+    align-items: center;
+    display    : flex;
+}
+
+.Form > :first-child {
+    flex-grow: 1;
+}
+
+.Form > :last-child {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .Form > :last-child {
+        display    : inline-flex;
+        height     : 5rem;
+        margin-left: 1rem;
+        max-width  : .5rem;
+        min-width  : 5rem;
+    }
+}

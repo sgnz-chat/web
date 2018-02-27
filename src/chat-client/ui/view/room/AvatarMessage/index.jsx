@@ -4,10 +4,11 @@ import Avatar  from "chat-client/ui/view/common/Avatar"
 import classNames from "chat-client/ui/view/room/AvatarMessage/classNames"
 
 export default ({
-    children,
     avatarUrl,
-    position = "left", // left or rignt
+    children,
     className,
+    name,
+    position = "left", // left or rignt
     ...props
 }) =>
     <div
@@ -27,13 +28,20 @@ export default ({
                 src={avatarUrl}
             />
         }
-        {React.cloneElement(
-            children,
-            {
-                position,
-                ...children.props
-            }
-        )}
+        <div
+            className={classNames.TextContent}
+        >
+            <div>
+                {name}
+            </div>
+            {React.cloneElement(
+                children,
+                {
+                    position,
+                    ...children.props
+                }
+            )}
+        </div>
         {avatarUrl && position == "right" &&
             <Avatar
                 className={classNames.Avatar}
