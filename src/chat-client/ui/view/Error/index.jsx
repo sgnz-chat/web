@@ -21,8 +21,13 @@ export default ({
               : error.status == 503 ? "機能メンテナンス中です(503)"
               : error.status == 504 ? "サーバーエラー(504)"
               :                       unknownError
-              : error instanceof TypeError ? error.message
-              :                              unknownError
+          : error instanceof TypeError ? unknownError
+          : error instanceof DOMException ? 
+                error.message == "Permission denied" ? "権限がありません"
+              : unknownError
+          : error instanceof Error ? 
+                error.message
+          : unknownError
         )}
     </Component>
  

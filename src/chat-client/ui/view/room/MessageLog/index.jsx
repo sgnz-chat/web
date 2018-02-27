@@ -40,7 +40,7 @@ export default class extends React.Component {
             <div
                 className={classNames.Host}
             >
-                {roomId ? messages.map(x => console.log(x) || 
+                {roomId ? messages.map(x => 
                     x.type == "text" ? (
                         user.id == x.senderId ? 
                             <MessageBox

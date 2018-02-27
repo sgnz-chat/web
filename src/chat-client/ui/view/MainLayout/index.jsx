@@ -193,8 +193,14 @@ export default class extends React.Component {
                                 answer()
                                 
                                 audioElement.srcObject = await getPartnerStream()
-                                console.log("getPartnerStream")
                                 audioElement.play()
+                                this.setState({
+                                    callState: {
+                                        ...this.state.callState,
+                                        isReceiving: false,
+                                        isTalking  : true,
+                                    }
+                                })
                             },
                         }
                     })
@@ -229,6 +235,7 @@ export default class extends React.Component {
     render() {
         const {
             children,
+            databaseApi,
             history,
             location,
             onError,
@@ -317,15 +324,44 @@ export default class extends React.Component {
                             children,
                             {
                                 telephoneCall: async userId => {
+
+                                    const sourceUser = await databaseApi.userApi.read({
+                                        user: {
+                                            id: userId
+                                        }
+                                    })
+
                                     const stream = await rtcApi.createStream("voice");
                                     
-                                    const x = await rtcApi.call(userId, stream)
+                                    const {
+                                        close,
+                                        getPartnerStream,
+                                    } = await rtcApi.call(userId, stream, "voice")
+
+                                    this.setState({
+                                        callState: {
+                                            close,
+                                            sourceUser,
+                                            isCalling: true
+                                        }
+                                    })
 
                                     const audioElement = ReactDOM.findDOMNode(this).children[0]
-                                    audioElement.srcObject = await x.getPartnerStream()
+                                    audioElement.srcObject = await getPartnerStream()
                                     audioElement.play()
+
+
+                                    this.setState({
+                                        callState: {
+                                            isReceiving: false,
+                                            isTalking  : true,
+                                            sourceUser,
+                                            close,
+                                        }
+                                    })
                                 },
                                 changeSubNavigationView: bool => this.setState({subNavigationIsView: bool}),
+                                databaseApi,
                                 history,
                                 location,
                                 rtcApi,
@@ -341,8 +377,9 @@ export default class extends React.Component {
                     </main>}
                 </div>
                 <TelephoneDialog
+                    isCalling={this.state.callState.isCalling}
                     isTalking={this.state.callState.isTalking}
-                    isVisible={this.state.callState.isReceiving}
+                    isVisible={this.state.callState.isReceiving || this.state.callState.isTalking || this.state.callState.isCalling}
                     user={this.state.callState.sourceUser}
                     onAnswerButtonClick={_ => {
                         this.state.callState.answer()
@@ -352,7 +389,6 @@ export default class extends React.Component {
                                 isTalking: true
                             }
                         })
-                        
                     }}
                     onCloseButtonClick={_ => {
                         this.state.callState.close()

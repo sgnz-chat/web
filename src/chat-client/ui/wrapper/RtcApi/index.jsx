@@ -2,15 +2,10 @@ import React     from "react"
 import skyWayKey from "api-common/skyWayKey"
 import setState  from "chat-client/util/setState"
 
-const permissionError = ({
-    message = "カメラとマイクの使用を許可してください"
-}) => new Error(message)
-
 export default class extends React.Component {
 
     componentWillMount() {
         this.setState({
-            isready          : false,
             receiveSubscribes: [],
             openSubscribes   : [],
             closeSubscribes  : []
@@ -40,67 +35,75 @@ export default class extends React.Component {
 
             try {
                 const devices = await navigator.mediaDevices.enumerateDevices()
-                if (devices.length == 0)
-                    onError(permissionError())
-                
+                if (devices.length == 0) {
+                    try {
+                        await navigator.mediaDevices.getUserMedia({
+                            video: call.type == "video" ? true : false,
+                            audio: true
+                        })
+                    } catch (e) {
+                        onError(e)
+                    }
 
+                }
+                
                 const peer = new Peer(
                     token.user.uid,
                     {
                         key: skyWayKey,
-                        debug: 3
+                        debug: 2
                     }
                 );
 
                 this.setState({peer})
 
                 peer.on("open", () => {
-                    this.setState({isready: true})
                     for (let f of this.state.openSubscribes)
                         f()
                 })
 
                 peer.on("close", () => {
-                    this.setState({isready: false})
                     for (let f of this.state.closeSubscribes)
                         f()
                 })
 
-
-
                 peer.on("call", async call => {
 
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        video: call.type == "video" ? true : false,
-                        audio: true
-                    })
-
-                    if (!stream)
-                        onError(permissionError())
-                    
-                    for (let f of this.state.receiveSubscribes)
-                        f({
-                            answer      : () => {
-                                this.setState({call})
-                                call.answer(stream)
-                            },
-                            close      : () => call.close(),
-                            stream,
-                            getPartnerStream: () => new Promise(resolve => {
-                                call.on("stream", x => {
-                                    resolve (x)
-                                })
-                            }),
-                            sourceUserId: call.metadata.sourceUserId,
-                            type        : call.metadata.type
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            video: call.type == "video" ? true : false,
+                            audio: true
                         })
-                        
+                    
+                        for (let f of this.state.receiveSubscribes)
+                            f({
+                                answer      : () => {
+                                    this.setState({call})
+                                    call.answer(stream)
+                                },
+                                close      : () => call.close(),
+                                stream,
+                                getPartnerStream: () => new Promise(resolve => {
+                                    call.on("stream", x => {
+                                        resolve (x)
+                                    })
+                                }),
+                                sourceUserId: call.metadata.sourceUserId,
+                                type        : call.metadata.type
+                            })
+
+                    } catch(e) {
+                        onError(e)
+                    }
                 });
 
                 peer.on("disconnected", () => undefined)
 
-                peer.on("error", e => onError(e.message));
+                peer.on("error", e => {
 
+                    if (e.type == "peer-unavailable")
+                        onError(new Error("宛先に繋がりません"))
+                });
             } catch (e) {
                 onError(e)
             }
@@ -118,49 +121,60 @@ export default class extends React.Component {
         return render({
             rtcApi: {
                 isReady: this.state.isReady,
-                createStream: async type => await navigator.mediaDevices.getUserMedia({
-                    video: type == "video" ? true : false,
-                    audio: true
-                }),
-                call: async (userId, stream) => {
+                createStream: async type => {
+                    try {
+                        await navigator.mediaDevices.getUserMedia({
+                            video: type == "video" ? true : false,
+                            audio: true
+                        })
+                    } catch (e) {
+                        onError(e)
+                        throw e
+                    }
+                },
+                call: async (userId, stream, type) => {
 
                     const sourceUserId = tokenApi.read().user.uid
                     
                     if (this.state.peer && sourceUserId) {
 
-                        if (this.state.call)
-                            this.state.call.close()
+                        try {
+                            if (this.state.call)
+                                this.state.call.close()
 
-                        const call = this.state.peer.call(
-                            userId,
-                            stream,
-                            {
-                                metadata: {
-                                    type: "voice",
-                                    sourceUserId
+                            const call = this.state.peer.call(
+                                userId,
+                                stream,
+                                {
+                                    metadata: {
+                                        type,
+                                        sourceUserId
+                                    }
                                 }
-                            }
-                        )
+                            )
 
-                        await setState(
-                            this,
-                            {call}
-                        )
-                        
-                        return ({
-                            close      : () => call.close(),
-                            stream,
-                            getPartnerStream: () => new Promise(resolve => {
-                                call.on("stream", x => {
-                                    resolve (x)
-                                    console.log('debug')
-                                });
-                            }),
-                            sourceUserId: call.metadata.sourceUserId,
-                            type        : call.metadata.type
-                        })
-                    } else {
-                        onError("rtcApi call error")
+                            await setState(
+                                this,
+                                {call}
+                            )
+                            
+                            return ({
+                                close      : () => call.close(),
+                                stream,
+                                getPartnerStream: () => new Promise(resolve => {
+                                    call.on("stream", x => {
+                                        resolve (x)
+                                    });
+                                }),
+                                sourceUserId: sourceUserId,
+                                type
+                            })
+
+                        } catch (e) {
+                            onError(e)
+                            throw e
+                        }
+
                     }
                 },
                 closeCall: () => {

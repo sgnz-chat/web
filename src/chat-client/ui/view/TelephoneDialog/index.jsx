@@ -9,6 +9,7 @@ import DialogHeader     from "chat-client/ui/view/common/DialogHeader"
 import classNames from "chat-client/ui/view/TelephoneDialog/classNames"
 
 export default ({
+    isCalling,
     isVisible,
     isTalking,
     type,
@@ -35,8 +36,9 @@ export default ({
                 <div>
                     {isVisible && user.statusMessage}
                 </div>
+                {isCalling && "呼び出し中..."}
                 <div>
-                    {!isTalking ? [
+                    {!isTalking && !isCalling ? [
                         <Button
                             color="BlueGrey"
                             key="rejectButton"
