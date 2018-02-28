@@ -96,7 +96,6 @@ export default class extends React.Component {
                         e.preventDefault()
                         let form  = e.target
                         let image = form.elements["image"].files[0]
-                        console.log(image, "!?!??!")
                         await createUserImage({image})
 
                         this.setState({

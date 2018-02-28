@@ -311,9 +311,22 @@ export default class extends React.Component {
                                     })
 
                                     const audioElement = ReactDOM.findDOMNode(this).children[0]
+                                    
+                                    call.on("close", () => {
+                                        audioElement.srcObject = null
+                                        this.setState({
+                                            callState: {
+                                                sourceUser : undefined,
+                                                call       : undefined,
+                                                isReceiving: false,
+                                                isTalking  : false,
+                                                isCalling  : false
+                                            }
+                                        })
+                                    })
 
                                     const partnerStream = await new Promise(resolve => {
-                                        this.state.callState.call.on("stream", x => 
+                                        call.on("stream", x => 
                                             resolve (x)
                                         )
                                     })
@@ -357,6 +370,20 @@ export default class extends React.Component {
 
                         const stream = await rtcApi.createStream("voice");
 
+                        
+                        this.state.callState.call.on("close", () => {
+                            audioElement.srcObject = null
+                            this.setState({
+                                callState: {
+                                    sourceUser : undefined,
+                                    call       : undefined,
+                                    isReceiving: false,
+                                    isTalking  : false,
+                                    isCalling  : false
+                                }
+                            })
+                        })
+
                         this.state.callState.call.answer(stream)
                         const partnerStream = await new Promise(resolve => 
                             this.state.callState.call.on("stream", x => {
@@ -377,19 +404,6 @@ export default class extends React.Component {
                                 isTalking  : true,
                                 isCalling  : false
                             }
-                        })
-                        
-                        this.state.callState.call.on("close", () => {
-                            audioElement.srcObject = null
-                            this.setState({
-                                callState: {
-                                    sourceUser : undefined,
-                                    call       : undefined,
-                                    isReceiving: false,
-                                    isTalking  : false,
-                                    isCalling  : false
-                                }
-                            })
                         })
                         
                     }}
